@@ -1,6 +1,25 @@
 package com.projet.Tournament;
 
+
+import net.bytebuddy.dynamic.loading.InjectionClassLoader;
+
+import javax.persistence.*;
+
+@Entity
+@Table
+
 public class Tournament {
+    @Id
+    @SequenceGenerator(
+            name = "tournament_sequence",
+            sequenceName = "tournament_sequence",
+            allocationSize = 1
+    )
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "tournament_sequence"
+
+    )
     private int  id;
     private String name;
     private boolean isPrivate;
