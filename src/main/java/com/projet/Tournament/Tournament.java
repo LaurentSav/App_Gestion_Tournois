@@ -20,25 +20,25 @@ public class Tournament {
             generator = "tournament_sequence"
 
     )
-    private int  id;
+    private Integer  id;
     private String name;
     private boolean isPrivate;
 
     public Tournament() {
     }
 
-    public Tournament (int id, String name,
+    public Tournament (Integer id, String name,
                       boolean isPrivate) {
         this.name = name;
         this.id = id;
         this.isPrivate = isPrivate;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -66,8 +66,8 @@ public class Tournament {
     @Override
     public String toString() {
         return "Tournament{" +
-                ", id=" + id +
                 "name='" + name + '\'' +
+                ", id=" + id +
                 ", isPrivate=" + isPrivate +
                 '}';
     }

@@ -1,9 +1,7 @@
 package com.projet.Tournament;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,5 +20,15 @@ public class TournamentController {
     @GetMapping
     public List<Tournament> getTournaments(){
         return tournamentService.getTournaments();
+    }
+
+    @PostMapping
+    public void registerNewTournament(@RequestBody Tournament tournament){
+        tournamentService.addNewTournament( tournament);
+    }
+
+    @DeleteMapping(path = "{tournamentId}")
+    public void deleteTournament(@PathVariable("tournamentId") Long tournamentId){
+        tournamentService.deleteTournament(tournamentId);
     }
 }
