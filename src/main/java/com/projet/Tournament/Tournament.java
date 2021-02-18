@@ -22,16 +22,34 @@ public class Tournament {
     )
     private Long  id;
     private String name;
-    private boolean isPrivate;
+
+    public Integer getNumberOfParticipants() {
+        return NumberOfParticipants;
+    }
+
+    public void setNumberOfParticipants(Integer numberOfParticipants) {
+        NumberOfParticipants = numberOfParticipants;
+    }
+
+    private Boolean isPrivate;
+    private Integer NumberOfParticipants;
 
     public Tournament() {
     }
 
+    public Tournament(String name, Boolean isPrivate, Integer numberOfParticipants) {
+        this.name = name;
+        this.isPrivate = isPrivate;
+        this.NumberOfParticipants = numberOfParticipants;
+    }
+
     public Tournament (Long id, String name,
-                      boolean isPrivate) {
+                       Boolean isPrivate, Integer numberOfParticipants) {
         this.name = name;
         this.id = id;
         this.isPrivate = isPrivate;
+        this.NumberOfParticipants = numberOfParticipants;
+
     }
 
     public Long getId() {
@@ -50,17 +68,12 @@ public class Tournament {
         this.name = name;
     }
 
-    public boolean isPrivate() {
+    public Boolean isPrivate() {
         return isPrivate;
     }
 
-    public void setPrivate(boolean aPrivate) {
+    public void setPrivate(Boolean aPrivate) {
         isPrivate = aPrivate;
-    }
-
-    public Tournament(String name, boolean isPrivate) {
-        this.name = name;
-        this.isPrivate = isPrivate;
     }
 
     @Override

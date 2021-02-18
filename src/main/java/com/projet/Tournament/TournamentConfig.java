@@ -15,14 +15,15 @@ public class TournamentConfig {
             TournamentRepository repository){
         return args -> {
              /*Tournament LeagueOfLegends = new Tournament(
-                     "League of Legends",
-                     false
+                     "Starcraft",
+                     false, 16
+
              );
              Tournament RocketLeague = new Tournament(
-                    "Rocket League",
-                     false
+                    "Fifa",
+                     false, 15
              );
-             *//*repository.saveAll(List.of(LeagueOfLegends, RocketLeague));*/
+             repository.saveAll(List.of(LeagueOfLegends, RocketLeague));*/
 
         };
     }

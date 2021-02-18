@@ -1,5 +1,6 @@
 package com.projet.Tournament;
 
+import org.aspectj.apache.bcel.classfile.Module;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,7 +26,7 @@ public class TournamentController {
 
     @PostMapping
     public void registerNewTournament(@RequestBody Tournament tournament){
-        tournamentService.addNewTournament( tournament);
+        tournamentService.addNewTournament(tournament);
     }
 
 /*    @DeleteMapping("/{tournamentName}")
@@ -41,8 +42,10 @@ public class TournamentController {
     @PutMapping("/{tournamentId}")
     public void updateTournament(
             @PathVariable("tournamentId") Long tournamentId,
-            @RequestParam(required = false) String name){
-        tournamentService.updateTournament(tournamentId, name);
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) Boolean is_private,
+            @RequestParam(required = false) Integer nb_participants){
+        tournamentService.updateTournament(tournamentId, name, is_private, nb_participants);
     }
 
 }
