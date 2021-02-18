@@ -2,9 +2,6 @@ package com.projet.Tournament;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
-
-import javax.swing.text.html.Option;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Objects;
@@ -21,8 +18,9 @@ public class TournamentService {
     }
 
     public List<Tournament> getTournaments() {
-        return tournamentRepository.findAll();
+        return tournamentRepository.findAllByIsPrivateIsFalse();
     }
+
 
     public void addNewTournament(Tournament tournament){
         Optional<Tournament> tournamentOptional = tournamentRepository.findTournamentByName(tournament.getName());
@@ -30,11 +28,11 @@ public class TournamentService {
             throw
                     new IllegalStateException("Name taken");
         }
-
         tournamentRepository.save(tournament);
     }
 
-    public void deleteTournament(String tounrnamentName) {
+
+  /*  public void deleteTournament(String tounrnamentName) {
         Optional<Tournament> tournamentOptional = tournamentRepository.findTournamentByName(tounrnamentName);
         boolean exists = tournamentOptional.isPresent();
         if (!exists){
@@ -42,7 +40,7 @@ public class TournamentService {
                     new IllegalStateException("Tournament " + tounrnamentName +" does not exist");
         }
         tournamentRepository.delete(tournamentOptional.get());
-    }
+    }*/
 
     public void deleteTournament(long tournamentId) {
         Optional<Tournament> tournamentOptional = tournamentRepository.findById(tournamentId);
@@ -55,7 +53,7 @@ public class TournamentService {
     }
 
     @Transactional
-    public void updateTournament(Long tournamentId, String name) {
+    public void updateTournament(Long tournamentId, String name, Boolean is_private, Integer nb_participants) {
         Optional<Tournament> tournamentOptional = tournamentRepository.findById(tournamentId);
         boolean exists = tournamentOptional.isPresent();
         if (!exists){
@@ -65,6 +63,14 @@ public class TournamentService {
 
         if(name != null && name.length() > 0 && !Objects.equals(tournamentOptional.get().getName(), name)){
             tournamentOptional.get().setName(name);
+        }
+
+        if(is_private != null && !Objects.equals(tournamentOptional.get().isPrivate(), is_private)){
+            tournamentOptional.get().setPrivate(is_private);
+        }
+
+        if(nb_participants != null && !Objects.equals(tournamentOptional.get().getNumberOfParticipants(), nb_participants)){
+            tournamentOptional.get().setNumberOfParticipants(nb_participants);
         }
     }
 }
