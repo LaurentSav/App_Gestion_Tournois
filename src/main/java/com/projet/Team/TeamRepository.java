@@ -12,4 +12,7 @@ public interface TeamRepository
         extends JpaRepository<Team, Long> {
 
 
+    List<Team> findTeamsBytournament(Tournament tournament);
+    Optional<Team> findTeamByNameAndTournament(String name, Tournament tournament);
+
 }

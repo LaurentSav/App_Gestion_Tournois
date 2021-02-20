@@ -73,11 +73,21 @@ public class Team {
         this.nbMembers = nbMembers;
     }
 
-/*    public Tournament getTournament() {
+    public Tournament getTournament() {
         return tournament;
     }
 
     public void setTournament(Tournament tournament) {
         this.tournament = tournament;
-    }*/
+    }
+
+    @Override
+    public String toString() {
+        return "Team{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", nbMembers=" + nbMembers +
+                ", tournament=" + tournament +
+                '}';
+    }
 }
