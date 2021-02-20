@@ -1,26 +1,24 @@
 package com.projet.Player;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
+import javax.persistence.*;
 
 public class Player {
 
 
     @Id
     @SequenceGenerator(
-            name = "tournament_sequence",
-            sequenceName = "tournament_sequence",
+            name = "player_sequence",
+            sequenceName = "player_sequence",
             allocationSize = 1
     )
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE,
-            generator = "tournament_sequence"
+            generator = "player_sequence"
 
     )
-
+    @Column(name = "id", updatable = false)
     private Long  id;
+    @Column(name = "name", nullable = false)
     private String name;
 
     public Player(String name) {
