@@ -1,7 +1,11 @@
 package com.projet.Player;
 
+import com.projet.Team.Team;
+
 import javax.persistence.*;
 
+@Entity(name = "Player")
+@Table(name = "player")
 public class Player {
 
 
@@ -20,6 +24,33 @@ public class Player {
     private Long  id;
     @Column(name = "name", nullable = false)
     private String name;
+
+    public Player() {
+    }
+
+    public Player(Long id, String name, Team team) {
+        this.id = id;
+        this.name = name;
+        this.team = team;
+    }
+
+    public Player(String name, Team team) {
+        this.name = name;
+        this.team = team;
+    }
+
+    public Team getTeam() {
+        return team;
+    }
+
+    public void setTeam(Team team) {
+        this.team = team;
+    }
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "team_id", nullable = false)
+    private Team team;
+
 
     public Player(String name) {
         this.name = name;

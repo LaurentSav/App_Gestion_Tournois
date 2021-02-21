@@ -24,14 +24,15 @@ public class TeamService {
         this.teamRepository = teamRepository;
     }
 
-
+    @Transactional
     public List<Team> getTeams(@RequestParam Long tournament_id) {
-        return teamRepository.
-                findTeamsBytournament(tournamentRepository.findById(tournament_id).get());
+        Optional<Tournament> optionalTournament = tournamentRepository.findById(tournament_id);
+        if(!optionalTournament.isPresent()){
+            throw new IllegalStateException("Tournament does not exist");
+        }
+        return teamRepository.findTeamsBytournament(optionalTournament.get());
     }
-    public List<Team> getTeams() {
-        return teamRepository.findAll();
-    }
+
 
     public void deleteTeam(Long teamId) {
         Optional<Team> team = teamRepository.findById(teamId);
@@ -47,7 +48,7 @@ public class TeamService {
         Optional<Team> optionalTeam =
                 teamRepository.findTeamByNameAndTournament(team.getName(), team.getTournament());
         boolean exists = optionalTeam.isPresent();
-        if (!exists){
+        if (exists){
             if(team.getName() == optionalTeam.get().getName() && team.getTournament() == optionalTeam.get().getTournament())
             throw
                     new IllegalStateException("Team " + team.getName() +" already exists");
@@ -61,7 +62,7 @@ public class TeamService {
         boolean exists = teamOptional.isPresent();
         if (!exists){
             throw
-                    new IllegalStateException("Team " + name +" does not exist");
+                    new IllegalStateException("Team " + tournamentId +" does not exist");
         }
 
         if(name != null && name.length() > 0 && !Objects.equals(teamOptional.get().getName(), name)){

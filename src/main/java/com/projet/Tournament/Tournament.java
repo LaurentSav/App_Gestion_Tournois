@@ -1,6 +1,7 @@
 package com.projet.Tournament;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.projet.Team.Team;
 import net.bytebuddy.dynamic.loading.InjectionClassLoader;
 
@@ -17,6 +18,7 @@ import static javax.persistence.GenerationType.SEQUENCE;
                 @UniqueConstraint(name = "tournament_name_unique", columnNames = "name")
         }
 )
+@JsonIgnoreProperties("teams")
 public class Tournament {
     @Id
     @SequenceGenerator(
@@ -43,6 +45,17 @@ public class Tournament {
     @JoinColumn(name = "tournament_id", referencedColumnName = "id")
     private List<Team> teams;
 
+    public List<Team> getTeams() {
+        return teams;
+    }
+
+    public void setTeams(List<Team> teams) {
+        this.teams = teams;
+    }
+
+    public Boolean getPrivate() {
+        return isPrivate;
+    }
 
     public Integer getNumberOfParticipants() {
         return NumberOfParticipants;

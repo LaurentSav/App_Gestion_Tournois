@@ -1,9 +1,14 @@
 package com.projet.Team;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.projet.Player.Player;
 import com.projet.Tournament.Tournament;
 
 import javax.persistence.*;
+
+
+import java.util.List;
 
 import static javax.persistence.GenerationType.SEQUENCE;
 
@@ -11,6 +16,7 @@ import static javax.persistence.GenerationType.SEQUENCE;
 @Table(
         name = "team"
 )
+@JsonIgnoreProperties("players")
 public class Team {
 
 
@@ -35,6 +41,19 @@ public class Team {
     @JoinColumn(name = "tournament_id", referencedColumnName = "id")
     private Tournament tournament;
 
+    public List<Player> getPlayers() {
+        return Players;
+    }
+
+    public void setPlayers(List<Player> players) {
+        Players = players;
+    }
+
+    @OneToMany(targetEntity = Player.class ,
+            cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY)
+    @JoinColumn(name = "team_id", referencedColumnName = "id")
+    private List<Player> Players;
     public Team() {
     }
     public Team(Long id, String name, Integer nbMembers) {

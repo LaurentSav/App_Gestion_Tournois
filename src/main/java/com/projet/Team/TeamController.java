@@ -1,7 +1,5 @@
 package com.projet.Team;
 
-import com.projet.Team.TeamService;
-import com.projet.Tournament.Tournament;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,12 +15,8 @@ public class TeamController {
         this.teamService = teamService;
     }
 
-    @GetMapping
-    public List<Team> getTournamentTeams( ){
-        return teamService.getTeams();
-    }
 
-    @GetMapping("/tourn={t_id}")
+    @GetMapping("/tournament={t_id}")
     public List<Team> getTournamentTeams( @PathVariable Long t_id){
         return teamService.getTeams(t_id);
     }
