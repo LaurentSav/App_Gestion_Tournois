@@ -1,5 +1,6 @@
 package com.projet.Player;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.projet.Team.Team;
 
 import javax.persistence.*;

@@ -4,6 +4,7 @@ import com.projet.Team.Team;
 import com.projet.Team.TeamRepository;
 import com.projet.Tournament.Tournament;
 import com.projet.Tournament.TournamentRepository;
+import net.bytebuddy.implementation.bytecode.Throw;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +19,6 @@ public class PlayerService {
 
     @Autowired
     private PlayerRepository playerRepository;
-/*    private TournamentRepository tournamentRepository;*/
     private TeamRepository teamRepository;
 
     public PlayerService(PlayerRepository playerRepository, TeamRepository teamRepository) {
@@ -31,34 +31,18 @@ public class PlayerService {
     }
 
     public List<Player> getTeamPlayers(Long t_id) {
-        Team team = teamRepository.findById(t_id).get();
-        return playerRepository.findPlayersByTeam(team);
-    }
-/*
-
-    public List<Player> getTournamentPlayers(Long t_id) {
-        Optional<Tournament> tournament = tournamentRepository.findById(t_id);
-        if(tournament.isPresent()){
-            throw
-                    new IllegalStateException("Tournament "+ t_id+ "does not exist");
+        Optional<Team> team = teamRepository.findById(t_id);
+        if(!team.isPresent()){
+            throw new IllegalStateException("Team " + t_id + " does not exist");
         }
-        List<Team> teams = teamRepository.findTeamsBytournament(tournament.get());
-        List<Player> players = null;
-        for (Team t : teams
-             ) {
-            players.addAll(t.getPlayers());
-
-
-        }
-
-        return players;
+        return playerRepository.findPlayersByTeam(team.get());
     }
-*/
+
 
     public void deletePlayer(Long playerId) {
         Optional<Player> player = playerRepository.findById(playerId);
         if(!player.isPresent()){
-            throw new IllegalStateException("player"+ playerId +" does not exist");
+            throw new IllegalStateException("player "+ playerId +" does not exist");
         }
         playerRepository.delete(player.get());
     }
@@ -77,6 +61,15 @@ public class PlayerService {
         if(team_id != null && !Objects.equals(playerOptional.get().getTeam().getId(), team_id )){
             playerOptional.get().setTeam(teamRepository.findById(team_id).get());
         }
+
+
+        Long t_id = playerOptional.get().getTeam().getId();
+        Optional<Team> pTeam = teamRepository.findById(t_id);
+        if(!pTeam.isPresent()){
+            deletePlayer(player_id);
+            throw  new IllegalStateException("Player's team doesnt exist anymore");
+        }
+
     }
 
     public void addNewPlayer(Player player) {
@@ -95,5 +88,13 @@ public class PlayerService {
             }
         }
         playerRepository.save(player);
+
+
+        Optional<Team> t = teamRepository.findById(player.getTeam().getId());
+        if(t.isPresent() && t.get().getCaptain() == null){
+            t.get().setCaptain(player);
+            t.get().addMember(player);
+        }
+
     }
 }

@@ -1,6 +1,7 @@
 package com.projet.Team;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.projet.Player.Player;
 import com.projet.Tournament.Tournament;
@@ -19,7 +20,7 @@ import static javax.persistence.GenerationType.SEQUENCE;
 @JsonIgnoreProperties("players")
 public class Team {
 
-
+    //Columns
     @Id
     @SequenceGenerator(
             name = "team_sequence",
@@ -35,11 +36,65 @@ public class Team {
 
     @Column(name = "name", nullable = false)
     String name;
-    @Column(name = "nb_members", nullable = false)
+    @Column(name = "nb_members")
     Integer nbMembers;
     @ManyToOne
     @JoinColumn(name = "tournament_id", referencedColumnName = "id")
     private Tournament tournament;
+
+
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "captain_id", referencedColumnName = "id")
+    private Player captain;
+
+    @OneToMany(targetEntity = Player.class ,
+            cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY)
+    @JoinColumn(name = "team_id", referencedColumnName = "id")
+    private List<Player> Players;
+
+    //Constructors
+    public Team() {
+    }
+    public Team(Long id, String name) {
+        this.id = id;
+        this.name = name;
+        nbMembers = 0;
+        if(getPlayers() != null){
+            this.nbMembers = getPlayers().size();
+        }
+
+
+    }
+    public Team(String name) {
+        this.name = name;
+        if(getPlayers() == null) {
+
+            this.nbMembers = 0;
+        }else{
+            this.nbMembers = getPlayers().size();
+        }
+
+    }
+    public Team(String name, Tournament tournament) {
+        this.name = name;
+        this.tournament = tournament;
+        nbMembers = 0;
+        if(getPlayers() != null){
+            this.nbMembers = getPlayers().size();
+        }
+
+    }
+
+    // Getters and setters
+
+    public Player getCaptain() {
+        return captain;
+    }
+    public void setCaptain(Player captain) {
+        this.captain = captain;
+    }
+
 
     public List<Player> getPlayers() {
         return Players;
@@ -49,24 +104,7 @@ public class Team {
         Players = players;
     }
 
-    @OneToMany(targetEntity = Player.class ,
-            cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY)
-    @JoinColumn(name = "team_id", referencedColumnName = "id")
-    private List<Player> Players;
-    public Team() {
-    }
-    public Team(Long id, String name, Integer nbMembers) {
-        this.id = id;
-        this.name = name;
-        this.nbMembers = nbMembers;
-    }
 
-
-    public Team(String name, Integer nbMembers) {
-        this.name = name;
-        this.nbMembers = nbMembers;
-    }
 
     public Long getId() {
         return id;
@@ -85,7 +123,24 @@ public class Team {
     }
 
     public Integer getNbMembers() {
+        this.nbMembers = 0;
+        if(Players != null){
+            this.nbMembers = Players.size();
+
+        }
         return nbMembers;
+    }
+
+
+    public void addMember(Player player){
+        getNbMembers(); //updates nbMembers
+        nbMembers += 1;
+        Players.add(player);
+    }
+
+    public void removePlayer(Player player){
+        this.nbMembers -= 1;
+        Players.remove(player);
     }
 
     public void setNbMembers(Integer nbMembers) {

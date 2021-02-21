@@ -34,9 +34,8 @@ public class TeamController {
     @PutMapping("/{team_Id}")
     public void updateTeam(
             @PathVariable("team_Id") Long team_Id,
-            @RequestParam(required = false) String name,
-            @RequestParam(required = false) Integer nb_members){
-        teamService.updateTeam(team_Id, name, nb_members);
+            @RequestParam(required = false) String name){
+        teamService.updateTeam(team_Id, name);
     }
 
 }

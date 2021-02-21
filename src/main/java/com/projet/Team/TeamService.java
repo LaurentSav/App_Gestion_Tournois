@@ -57,7 +57,7 @@ public class TeamService {
     }
 
     @Transactional
-    public void updateTeam(Long tournamentId, String name, Integer nb_members) {
+    public void updateTeam(Long tournamentId, String name) {
         Optional<Team> teamOptional = teamRepository.findById(tournamentId);
         boolean exists = teamOptional.isPresent();
         if (!exists){
@@ -69,10 +69,6 @@ public class TeamService {
             teamOptional.get().setName(name);
         }
 
-
-        if(nb_members != null && !Objects.equals(teamOptional.get().getNbMembers(), nb_members)){
-            teamOptional.get().setNbMembers(nb_members);
-        }
     }
 }
 
