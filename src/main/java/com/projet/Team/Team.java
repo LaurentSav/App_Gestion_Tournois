@@ -3,6 +3,7 @@ package com.projet.Team;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.projet.Player.Player;
 import com.projet.Tournament.Tournament;
 
@@ -38,7 +39,7 @@ public class Team {
     String name;
     @Column(name = "nb_members")
     Integer nbMembers;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "tournament_id", referencedColumnName = "id")
     private Tournament tournament;
 
@@ -51,6 +52,7 @@ public class Team {
             cascade = CascadeType.ALL,
             fetch = FetchType.LAZY)
     @JoinColumn(name = "team_id", referencedColumnName = "id")
+    @JsonIgnore
     private List<Player> Players;
 
     //Constructors

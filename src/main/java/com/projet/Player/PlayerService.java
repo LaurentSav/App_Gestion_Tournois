@@ -87,14 +87,15 @@ public class PlayerService {
 
             }
         }
-        playerRepository.save(player);
-
-
         Optional<Team> t = teamRepository.findById(player.getTeam().getId());
         if(t.isPresent() && t.get().getCaptain() == null){
             t.get().setCaptain(player);
             t.get().addMember(player);
         }
+        playerRepository.save(player);
+
+
+
 
     }
 }
