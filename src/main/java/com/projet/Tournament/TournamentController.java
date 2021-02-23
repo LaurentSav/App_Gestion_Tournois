@@ -29,11 +29,6 @@ public class TournamentController {
         tournamentService.addNewTournament(tournament);
     }
 
-/*    @DeleteMapping("/{tournamentName}")
-    public void deleteTournamentByName(@PathVariable("tournamentName") String tournamentName){
-        tournamentService.deleteTournament(tournamentName);
-    }*/
-
     @DeleteMapping("/{tournamentId}")
     public void deleteTournamentById(@PathVariable("tournamentId") Long tournamentId){
         tournamentService.deleteTournament(tournamentId);

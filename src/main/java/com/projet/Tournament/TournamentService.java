@@ -18,7 +18,13 @@ public class TournamentService {
     }
 
     public List<Tournament> getTournaments() {
-        return tournamentRepository.findAllByIsPrivateIsFalse();
+        List<Tournament> tournaments = tournamentRepository.findAllByIsPrivateIsFalse();
+       /* for (Tournament t : tournaments
+             ) {
+            // updating nb of participants
+            t.setNumberOfParticipants(t.getTeams().size());
+        }*/
+        return tournaments;
     }
 
 
@@ -32,15 +38,6 @@ public class TournamentService {
     }
 
 
-  /*  public void deleteTournament(String tounrnamentName) {
-        Optional<Tournament> tournamentOptional = tournamentRepository.findTournamentByName(tounrnamentName);
-        boolean exists = tournamentOptional.isPresent();
-        if (!exists){
-            throw
-                    new IllegalStateException("Tournament " + tounrnamentName +" does not exist");
-        }
-        tournamentRepository.delete(tournamentOptional.get());
-    }*/
 
     public void deleteTournament(long tournamentId) {
         Optional<Tournament> tournamentOptional = tournamentRepository.findById(tournamentId);

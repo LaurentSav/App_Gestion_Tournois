@@ -1,13 +1,24 @@
 package com.projet.Tournament;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.projet.Team.Team;
 import net.bytebuddy.dynamic.loading.InjectionClassLoader;
 
 import javax.persistence.*;
 
-@Entity
-@Table
+import java.util.List;
 
+import static javax.persistence.GenerationType.SEQUENCE;
+
+@Entity(name = "Tournament")
+@Table(
+        name = "tournament",
+        uniqueConstraints = {
+                @UniqueConstraint(name = "tournament_name_unique", columnNames = "name")
+        }
+)
+@JsonIgnoreProperties("teams")
 public class Tournament {
     @Id
     @SequenceGenerator(
@@ -16,12 +27,35 @@ public class Tournament {
             allocationSize = 1
     )
     @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
+            strategy = SEQUENCE,
             generator = "tournament_sequence"
-
     )
+    @Column(name = "id", updatable = false)
     private Long  id;
+    @Column(
+            name = "name",
+            nullable = false
+    )
     private String name;
+    @Column(name = "private", nullable = false)
+    private Boolean isPrivate;
+    @Column(name = "nb_participants")
+    private Integer NumberOfParticipants;
+    @OneToMany(targetEntity = Team.class , cascade = CascadeType.ALL)
+    @JoinColumn(name = "tournament_id", referencedColumnName = "id")
+    private List<Team> teams;
+
+    public List<Team> getTeams() {
+        return teams;
+    }
+
+    public void setTeams(List<Team> teams) {
+        this.teams = teams;
+    }
+
+    public Boolean getPrivate() {
+        return isPrivate;
+    }
 
     public Integer getNumberOfParticipants() {
         return NumberOfParticipants;
@@ -30,9 +64,6 @@ public class Tournament {
     public void setNumberOfParticipants(Integer numberOfParticipants) {
         NumberOfParticipants = numberOfParticipants;
     }
-
-    private Boolean isPrivate;
-    private Integer NumberOfParticipants;
 
     public Tournament() {
     }
