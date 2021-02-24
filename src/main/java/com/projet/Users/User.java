@@ -1,6 +1,10 @@
 package com.projet.Users;
 
+import com.projet.Team.Team;
+import com.projet.Tournament.Tournament;
+
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table
@@ -16,15 +20,18 @@ public class User {
     @Column(nullable = false, length = 64)
     private String password;
 
-    public User() {
-    }
-
     @Column(nullable = false, length = 20)
     private String firstName;
 
     @Column(nullable = false, length = 20)
     private String lastName;
 
+    @OneToMany(targetEntity = Tournament.class , cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private List<Tournament> tournaments;
+
+    public User() {
+    }
     public Long getId() {
         return id;
     }

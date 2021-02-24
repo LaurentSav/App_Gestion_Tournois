@@ -3,6 +3,7 @@ package com.projet.Tournament;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.projet.Team.Team;
+import com.projet.Users.User;
 import net.bytebuddy.dynamic.loading.InjectionClassLoader;
 
 import javax.persistence.*;
@@ -44,6 +45,9 @@ public class Tournament {
     @OneToMany(targetEntity = Team.class , cascade = CascadeType.ALL)
     @JoinColumn(name = "tournament_id", referencedColumnName = "id")
     private List<Team> teams;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
 
     public List<Team> getTeams() {
         return teams;
