@@ -45,9 +45,25 @@ public class Tournament {
     @OneToMany(targetEntity = Team.class , cascade = CascadeType.ALL)
     @JoinColumn(name = "tournament_id", referencedColumnName = "id")
     private List<Team> teams;
+
+    public Tournament(String name, Boolean isPrivate, Integer numberOfParticipants, User owner) {
+        this.name = name;
+        this.isPrivate = isPrivate;
+        NumberOfParticipants = numberOfParticipants;
+        this.owner = owner;
+    }
+
+    public User getOwner() {
+        return owner;
+    }
+
+    public void setOwner(User owner) {
+        this.owner = owner;
+    }
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private User user;
+    private User owner;
 
     public List<Team> getTeams() {
         return teams;

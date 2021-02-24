@@ -1,5 +1,6 @@
 package com.projet.Users;
 
+import com.projet.Player.Player;
 import com.projet.Team.Team;
 import com.projet.Tournament.Tournament;
 
@@ -29,6 +30,11 @@ public class User {
     @OneToMany(targetEntity = Tournament.class , cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private List<Tournament> tournaments;
+
+
+    @OneToMany(targetEntity =  Player.class , cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id" , referencedColumnName = "id")
+    private List<Player> playerEntities; //Representation of a user in a tournament
 
     public User() {
     }
