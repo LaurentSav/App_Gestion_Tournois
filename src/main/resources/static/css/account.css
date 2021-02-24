@@ -1,0 +1,80 @@
+.login-box{
+    height: 100%;
+}
+
+.hide-radio {
+    display: none;
+}
+
+.tab{
+    font-size: x-large;
+    margin-right: 2%;
+    color: grey;
+}
+.row{
+    height: 100%;
+}
+.card{
+    height: 100%;
+}
+
+#tab-1:checked + label{
+    font-size: xx-large;
+    color: black;
+    transition: font-size 0.2s;
+}
+
+#tab-2:checked + label{
+    font-size: xx-large;
+    color: black;
+    transition: font-size 0.2s;
+}
+
+
+.login-box{
+    margin: 10%;
+}
+
+.login-space{
+    margin-top: 5%;
+}
+
+.group{
+    display: flex;
+    flex-direction: column;
+    margin: 2% 2% 2% 0;
+}
+.group1{
+    display: block;
+    margin: 2% 2% 2% 0;
+}
+
+.login {
+    display: none;
+
+}
+.sign-up-form{
+    display: none;
+}
+
+
+
+.login-space .input{
+    font-size: large;
+    border-radius: 5px;
+    border-style: solid;
+}
+.login-space .button{
+    width: 20%;
+    margin: auto;
+    margin-top: 5%;
+}
+
+#tab-1:checked ~ * .login{
+    display: block;
+}
+#tab-2:checked ~ * .sign-up-form{
+    display: block;
+}
+
+

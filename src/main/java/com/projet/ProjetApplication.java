@@ -21,6 +21,10 @@ public class ProjetApplication {
     }
 
 
+    @RequestMapping(method = RequestMethod.GET, value = "/account")
+    public String account() {
+        return "account.html";
+    }
 
     @RequestMapping(method = RequestMethod.GET, value = "/search")
     public String search() {
