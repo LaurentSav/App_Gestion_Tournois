@@ -15,7 +15,6 @@ public class TeamController {
         this.teamService = teamService;
     }
 
-
     @GetMapping("/tournament={t_id}")
     public List<Team> getTournamentTeams( @PathVariable Long t_id){
         return teamService.getTeams(t_id);

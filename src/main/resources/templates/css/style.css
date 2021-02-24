@@ -1,0 +1,10 @@
+@import url(index.css);
+@import url(account.css);
+
+html, body{
+    height: 100%;
+}
+
+.primary-color{
+    background-color: #2c3e50;
+}
