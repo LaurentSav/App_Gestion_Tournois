@@ -77,6 +77,7 @@ public class Tournament {
     public Tournament (Long id, String name,
                        Boolean isPrivate, Integer numberOfParticipants) {
         this.name = name;
+
         this.id = id;
         this.isPrivate = isPrivate;
         this.NumberOfParticipants = numberOfParticipants;
