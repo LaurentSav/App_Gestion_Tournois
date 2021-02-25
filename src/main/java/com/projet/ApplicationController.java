@@ -1,5 +1,7 @@
 package com.projet;
 
+import com.projet.Tournament.Tournament;
+import com.projet.Tournament.TournamentRepository;
 import com.projet.Users.User;
 import com.projet.Users.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +19,13 @@ public class ApplicationController {
     @Autowired
     private UserRepository userRepo;
 
+    @Autowired
+    private TournamentRepository trepo;
+
     @GetMapping("")
-    public String viewHomePage() {
+    public String viewHomePage(Model model) {
+        List<Tournament> listTournoi = trepo.findAll();
+        model.addAttribute("listTournoi", listTournoi);
         return "index";
     }
     @GetMapping("/users")
@@ -29,10 +36,16 @@ public class ApplicationController {
         return "users";
     }
 
-    @GetMapping("/login")
-    public String showLoginForm(Model model) {
+    @GetMapping("/account")
+    public String viewAccount(Model model) {
         return "account";
     }
+
+    @GetMapping("/login")
+    public String showLoginForm(Model model) {
+        return "login_form";
+    }
+
     @GetMapping("/register")
     public String showRegistrationForm(Model model) {
         model.addAttribute("user", new User());
