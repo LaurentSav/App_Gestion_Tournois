@@ -1,12 +1,10 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html xmlns:th="http://www.thymeleaf.org">
     <head>
-        <meta charset="ISO-8859-1">
-        <title>Sign Up</title>
+        <meta charset="UTF-8">
+        <title>Login</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
         <link rel="stylesheet" href="css/style.css">
-        <script type="text/javascript" src="/webjars/jquery/jquery.min.js"></script>
-        <script type="text/javascript" src="/webjars/bootstrap/js/bootstrap.min.js"></script>
     </head>
     <body>
         <div class="container-fluid primary-color">
@@ -45,51 +43,38 @@
             </nav>
         </div>
         <div class="min-height">
-            <div class="container text-center marginTop5">
-                <div>
-                    <h1>Sign Up</h1>
-                </div>
-                <form th:action="@{/process_register}" th:object="${user}"
-                      method="post" style="max-width: 600px; margin: 0 auto;">
-                    <div class="m-3">
-                        <div class="form-group row marginTop5">
-                            <label class="col-4 col-form-label">E-mail: </label>
-                            <div class="col-8">
-                                <input type="email" th:field="*{email}" class="form-control" required />
-                            </div>
+            <div class="container min-height">
+                <h1 class="text-center marginTop5">Veuillez-vous connecter</h1>
+                <form th:name="Login" method="POST"  th:action="@{/login}" class="min-height">
+                    <div class="width50 marginauto">
+
+                        <div th:if="${param.error}" class="alert alert-error">
+                            Invalid credentials
+                        </div>
+                        <div th:if="${param.error}" class="alert alert-success">
+                            You have been logged out
                         </div>
 
-                        <div class="form-group row marginTop5">
-                            <label class="col-4 col-form-label">Password: </label>
-                            <div class="col-8">
-                                <input type="password" th:field="*{password}" class="form-control"
-                                       required minlength="6" maxlength="10"/>
-                            </div>
+                        <div class ="d-flex flex-column">
+                            <div class="d-flex flex-column">
+                                    <label for="email" >E-mail</label>
+                                    <input type="email" id="email" name="email"/>
+
+                                </div>
+                                <div class="d-flex flex-column marginTop5">
+                                    <label for="password" > Password </label>
+                                    <input type="password" id = "password" name="password"/>
+                                </div>
                         </div>
 
-                        <div class="form-group row marginTop5">
-                            <label class="col-4 col-form-label">First Name: </label>
-                            <div class="col-8">
-                                <input type="text" th:field="*{firstName}" class="form-control"
-                                       required minlength="2" maxlength="20"/>
-                            </div>
+                        <div class="form-actions marginTop5 flexcenter">
+                            <button type="submit" class="btn btn-primary">Log in</button>
                         </div>
 
-                        <div class="form-group row marginTop5">
-                            <label class="col-4 col-form-label">Last Name: </label>
-                            <div class="col-8">
-                                <input type="text" th:field="*{lastName}" class="form-control"
-                                       required minlength="2" maxlength="20" />
-                            </div>
-                        </div>
 
-                        <div class="marginTop5">
-                            <button type="submit" class="btn btn-primary">Sign Up</button>
-                        </div>
                     </div>
                 </form>
             </div>
-
         </div>
 
     </body>

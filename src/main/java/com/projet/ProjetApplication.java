@@ -20,16 +20,4 @@ public class ProjetApplication {
         SpringApplication.run(ProjetApplication.class, args);
     }
 
-
-    @RequestMapping(method = RequestMethod.GET, value = "/account")
-    public String account() {
-        return "account.html";
-    }
-
-    @RequestMapping(method = RequestMethod.GET, value = "/search")
-    public String search() {
-        return "search.html";
-    }
-
-
 }
