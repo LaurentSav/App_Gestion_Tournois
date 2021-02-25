@@ -2,6 +2,8 @@ package com.projet.Player;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.projet.Team.Team;
+import com.projet.Tournament.Tournament;
+import com.projet.Users.User;
 
 import javax.persistence.*;
 
@@ -25,8 +27,26 @@ public class Player {
     private Long  id;
     @Column(name = "name", nullable = false)
     private String name;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
+
 
     public Player() {
+    }
+
+    public Player(String name, User user, Team team) {
+        this.name = name;
+        this.user = user;
+        this.team = team;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Player(Long id, String name, Team team) {
