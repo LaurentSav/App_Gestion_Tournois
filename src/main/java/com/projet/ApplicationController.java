@@ -53,6 +53,9 @@ public class ApplicationController {
         return "account";
     }
 
+    @GetMapping("/account/editAccount")
+    public String editAccount(Model model){ return "editAccount"; }
+
     @GetMapping("/login")
     public String showLoginForm(Model model) {
         return "login_form";
