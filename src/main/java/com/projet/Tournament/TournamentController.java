@@ -28,14 +28,19 @@ public class TournamentController {
 
     @PostMapping
     public void registerNewTournament(@RequestBody Tournament tournament){
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        /*Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         if (principal instanceof UserDetails) {
             String username = ((UserDetails)principal).getUsername();
         } else {
             String username = principal.toString();
-        }
+        }*/
         tournamentService.addNewTournament(tournament);
+    }
+
+    @GetMapping( "/{tournamentId}")
+    public Tournament findById(@PathVariable Long tournamentId){
+        return tournamentService.getTournament(tournamentId);
     }
 
     @DeleteMapping( "/{tournamentId}")

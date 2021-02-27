@@ -61,6 +61,7 @@ public class Tournament {
         this.owner = owner;
     }
 
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User owner;

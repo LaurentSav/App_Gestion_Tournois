@@ -1,6 +1,9 @@
 package com.projet.Tournament;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.List;
@@ -18,13 +21,19 @@ public class TournamentService {
     }
 
     public List<Tournament> getTournaments() {
-        List<Tournament> tournaments = tournamentRepository.findAllByIsPrivateIsFalse();
+        List<Tournament> tournaments = tournamentRepository.findAll();
        /* for (Tournament t : tournaments
              ) {
             // updating nb of participants
             t.setNumberOfParticipants(t.getTeams().size());
         }*/
         return tournaments;
+    }
+
+    public Page<Tournament> getTournaments(int pageNum){
+        int pagesize = 15;
+        Pageable pageable = PageRequest.of(pageNum -1, pagesize);
+        return tournamentRepository.findAll(pageable);
     }
 
 
@@ -36,6 +45,12 @@ public class TournamentService {
         }
         tournamentRepository.save(tournament);
     }
+
+    public Tournament getTournament(Long id){
+        Tournament tournament = tournamentRepository.findById(id).get();
+        return tournament;
+    }
+
 
 
 
@@ -70,4 +85,6 @@ public class TournamentService {
             tournamentOptional.get().setNumberOfParticipants(nb_participants);
         }
     }
+
+
 }

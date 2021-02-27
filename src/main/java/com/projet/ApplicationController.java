@@ -2,16 +2,18 @@ package com.projet;
 
 import com.projet.Tournament.Tournament;
 import com.projet.Tournament.TournamentRepository;
+import com.projet.Tournament.TournamentService;
 import com.projet.Users.User;
 import com.projet.Users.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @Controller
@@ -22,11 +24,21 @@ public class ApplicationController {
     @Autowired
     private TournamentRepository trepo;
 
+    @Autowired
+    private TournamentService tournamentService;
+
     @GetMapping("")
-    public String viewHomePage(Model model) {
-        List<Tournament> listTournoi = trepo.findAll();
+    public String viewHomePage(Model model, @RequestParam(defaultValue = "1") int p) {
+
+        Page<Tournament> page = tournamentService.getTournaments(p);
+        List<Tournament> listTournoi = page.getContent();
+        model.addAttribute("currentPage", p);
+        model.addAttribute("previousPage", p-1);
+        model.addAttribute("nextPage", p +1);
+        model.addAttribute("totalPage", page.getTotalPages());
         model.addAttribute("listTournoi", listTournoi);
         return "index";
+
     }
     @GetMapping("/users")
     public String listUsers(Model model) {
@@ -62,6 +74,8 @@ public class ApplicationController {
 
         return "register_success";
     }
+
+
 
 
     
