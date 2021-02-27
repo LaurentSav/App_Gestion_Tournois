@@ -34,6 +34,13 @@ public class TournamentService {
             throw
                     new IllegalStateException("Name taken");
         }
+        int x = tournament.getNumberOfParticipants();
+        while (x % 2 == 0){
+            x /= 2;
+        }
+        if(x != 1){
+            throw  new IllegalStateException("Nb of participants must be k = 2^n");
+        }
         tournamentRepository.save(tournament);
     }
 
@@ -59,6 +66,11 @@ public class TournamentService {
         }
 
         if(name != null && name.length() > 0 && !Objects.equals(tournamentOptional.get().getName(), name)){
+            Optional<Tournament> nameOptional = tournamentRepository.findTournamentByName(name);
+            if(nameOptional.isPresent() && nameOptional.get().getId() != tournamentId){
+                throw
+                        new IllegalStateException("Name taken");
+            }
             tournamentOptional.get().setName(name);
         }
 
@@ -67,7 +79,27 @@ public class TournamentService {
         }
 
         if(nb_participants != null && !Objects.equals(tournamentOptional.get().getNumberOfParticipants(), nb_participants)){
+            int x = nb_participants;
+            while (x % 2 == 0){
+                x /= 2;
+            }
+            if(x != 1){
+                throw  new IllegalStateException("Nb of participants must be k = 2^n");
+            }
             tournamentOptional.get().setNumberOfParticipants(nb_participants);
         }
+    }
+
+    public void startTournament(Long tournamentId) {
+        Optional<Tournament> tournamentOptional = tournamentRepository.findById(tournamentId);
+        if(!tournamentOptional.isPresent()){
+            throw new IllegalStateException("Tournament " + tournamentId + " doesnt exist");
+        }
+        if(tournamentOptional.get().getTeams().size() < tournamentOptional.get().getNumberOfParticipants()){
+            throw new IllegalStateException("Tournament is not full");
+
+        }
+        tournamentOptional.get().setStarted(true);
+
     }
 }

@@ -16,12 +16,10 @@ public class PlayerController {
         this.playerService = playerService;
     }
 
-
     @GetMapping("/team={t_id}")
     public List<Player> getTeamPlayers(@PathVariable Long t_id){
         return playerService.getTeamPlayers(t_id);
     }
-
 
     @GetMapping
     public List<Player> getPlayers(){

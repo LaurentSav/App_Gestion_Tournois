@@ -1,8 +1,6 @@
 package com.projet.Player;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.projet.Team.Team;
-import com.projet.Tournament.Tournament;
 import com.projet.Users.User;
 
 import javax.persistence.*;
