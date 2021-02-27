@@ -63,6 +63,15 @@ public class ApplicationController {
         model.addAttribute("user", new User());
         return "signup_form";
     }
+    @GetMapping("/search")
+    public String showSearch(Model model, @RequestParam(defaultValue = "") String search){
+        if(search != ""){
+            List<Tournament> tournamentsSearch = tournamentService.findbyWord(search);
+            model.addAttribute("tournaments", tournamentsSearch);
+            model.addAttribute("recherche", search);
+        }
+        return "Search";
+    }
 
     @PostMapping("/process_register")
     public String processRegister(User user) {
@@ -75,9 +84,5 @@ public class ApplicationController {
         return "register_success";
     }
 
-
-
-
-    
 
 }

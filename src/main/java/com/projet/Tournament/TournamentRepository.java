@@ -13,6 +13,9 @@ public interface TournamentRepository
     @Query("SELECT t FROM  Tournament t WHERE t.name = :name")
     Optional<Tournament> findTournamentByName(String name);
 
+    @Query("SELECT t FROM Tournament t WHERE t.name LIKE CONCAT('%',:name,'%')")
+    List<Tournament> findTournamentByWord(@Param("name") String word);
+
     List<Tournament> findAllByIsPrivateIsFalse();
 
 

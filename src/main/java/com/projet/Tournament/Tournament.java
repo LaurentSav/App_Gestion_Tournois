@@ -38,6 +38,8 @@ public class Tournament {
             nullable = false
     )
     private String name;
+    @Column(name="game_name", nullable = true)
+    private String gameName;
     @Column(name = "private", nullable = false)
     private Boolean isPrivate;
     @Column(name = "nb_participants")
@@ -61,6 +63,21 @@ public class Tournament {
         this.owner = owner;
     }
 
+    public String getGameName() {
+        return gameName;
+    }
+
+    public void setGameName(String gameName) {
+        this.gameName = gameName;
+    }
+
+    public Tournament(String name, String gameName, Boolean isPrivate, Integer numberOfParticipants, User owner) {
+        this.name = name;
+        this.gameName = gameName;
+        this.isPrivate = isPrivate;
+        NumberOfParticipants = numberOfParticipants;
+        this.owner = owner;
+    }
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "id")

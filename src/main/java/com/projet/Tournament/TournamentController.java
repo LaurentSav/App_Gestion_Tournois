@@ -20,7 +20,6 @@ public class TournamentController {
         this.tournamentService = tournamentService;
     }
 
-    @PreAuthorize("isAuthenticated()")
     @GetMapping
     public List<Tournament> getTournaments(){
         return tournamentService.getTournaments();

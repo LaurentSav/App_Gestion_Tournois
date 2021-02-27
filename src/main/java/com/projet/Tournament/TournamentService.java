@@ -51,7 +51,10 @@ public class TournamentService {
         return tournament;
     }
 
-
+    public List<Tournament> findbyWord(String word){
+        List<Tournament> listTournois = tournamentRepository.findTournamentByWord(word);
+        return listTournois;
+    }
 
 
     public void deleteTournament(long tournamentId) {
