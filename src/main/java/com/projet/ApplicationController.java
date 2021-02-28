@@ -1,5 +1,6 @@
 package com.projet;
 
+import com.projet.Tournament.Tournament;
 import com.projet.Users.User;
 import com.projet.Users.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
@@ -50,7 +52,12 @@ public class ApplicationController {
         return "register_success";
     }
 
+    @GetMapping("/createtournament")
+    public String createTournament(Model model) {
+        model.addAttribute("tournament", new Tournament());
+        return "createtournament";
+    }
 
-    
+
 
 }

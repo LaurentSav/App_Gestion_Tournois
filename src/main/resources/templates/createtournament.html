@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Création de Tounroi</title>
+    <link rel="stylesheet" type="text/css" href="css/createtournament.css"/>
+    <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/css/bootstrap.min.css" />
+    <script type="text/javascript" src="/webjars/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="container text-center">
+    <div>
+        <h1>Create tournament</h1>
+    </div>
+    <form th:action="@{/tournament}" th:object="${tournament}"
+          method="post" style="max-width: 600px; margin: 0 auto;">
+        <div class="m-3">
+            <div class="form-group row">
+                <label class="col-4 col-form-label">Nom du tournoi </label>
+                <div class="col-8">
+                    <input type="text" th:field="*{name}" class="form-control" required />
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-4 col-form-label">Nom du Jeu </label>
+                <div class="col-8">
+                    <input type="text" th:field="*{game}" class="form-control" required/>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-4 col-form-label">Nombre de Participants</label>
+                <div class="col-8">
+                    <input type="number" th:field="*{numberOfParticipants}" class="form-control" required />
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-4 col-form-label">Description</label>
+                <div class="col-8">
+                    <input type="text" th:field="*{description}" class="form-control" required />
+                </div>
+            </div>
+
+            <div class="form-check row">
+                <label class="col-4 col-form-label">Tournoi prive</label>
+                <div class="col-8">
+                    <input type="checkbox" th:field="*{private}" class="form-check-input" required />
+                </div>
+            </div>
+
+            <div class="d-none">
+                <div class="col-8">
+                    <input th:field="*{#authentication.getPrincipal().getUser()}" class="form-check-input" required />
+                </div>
+            </div>
+
+
+
+            <div>
+                <button type="submit" class="btn btn-primary">Creer</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+</body>
+</html>

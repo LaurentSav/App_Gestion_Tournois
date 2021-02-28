@@ -1,5 +1,6 @@
 @import url(index.css);
 @import url(account.css);
+@import url(templates/css/createtournament.css);
 
 html, body{
     height: 100%;
