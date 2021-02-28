@@ -1,12 +1,9 @@
 package com.projet.Tournament;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.projet.Games.Game;
 import com.projet.Team.Team;
 import com.projet.Users.User;
-import net.bytebuddy.dynamic.loading.InjectionClassLoader;
-import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 
@@ -36,7 +33,7 @@ public class Tournament {
     private String name;
 
     @Column(name = "private", nullable = false)
-    private Boolean isPrivate;
+    private Boolean isPrivate = false;
 
     @Column(name = "game", nullable = false)
     private String game;
@@ -45,6 +42,8 @@ public class Tournament {
     private Integer NumberOfParticipants;
     @Column(name = "description", nullable = true)
     private String description;
+    @Column(name = "start_date", nullable = true)
+    private Date startdate;
 
     @OneToMany(targetEntity = Team.class , cascade = CascadeType.ALL)
     @JoinColumn(name = "tournament_id", referencedColumnName = "id")
@@ -52,15 +51,12 @@ public class Tournament {
     @OneToMany(targetEntity = Game.class , cascade = CascadeType.ALL)
     @JoinColumn(name = "tournament_id", referencedColumnName = "id")
     private List<Game> Games ;
-    @Column(name = "started", nullable = false)
-    private Boolean started;
+    @Column(name = "started")
+    private Boolean started = false;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User owner;
 
-
-    public Tournament() {
-    }
 
     public Tournament(String name, Boolean isPrivate, Integer numberOfParticipants, String description, User owner) {
         this.name = name;
@@ -105,13 +101,6 @@ public class Tournament {
         this.game = game;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
 
     public User getOwner() {
         return owner;
@@ -209,6 +198,14 @@ public class Tournament {
 
     public void setGames(List<Game> games) {
         Games = games;
+    }
+
+    public Date getStartdate() {
+        return startdate;
+    }
+
+    public void setStartdate(Date startdate) {
+        this.startdate = startdate;
     }
 
     @Override

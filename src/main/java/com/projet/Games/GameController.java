@@ -5,6 +5,7 @@ import com.projet.Tournament.Tournament;
 import com.projet.Tournament.TournamentRepository;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 
@@ -28,8 +29,9 @@ public class GameController {
     @PutMapping("{game_id}")
     public void updateGame(@PathVariable("game_id") Long game_id,
                            @RequestParam(required = false) Long rteam_id,
-                           @RequestParam(required = false) Long bteam_id){
-        gameService.updateGame(game_id, rteam_id, bteam_id);
+                           @RequestParam(required = false) Long bteam_id,
+                           @RequestParam("date") Date date){
+        gameService.updateGame(game_id, rteam_id, bteam_id, date);
     }
 
     @PutMapping("/setWinnerRed/{game_id}")

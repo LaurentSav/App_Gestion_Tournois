@@ -4,6 +4,7 @@ import com.projet.Team.Team;
 import com.projet.Tournament.Tournament;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity(name = "Game")
 @Table(name = "game")
@@ -22,6 +23,8 @@ public class Game {
     @Column(name = "id" , updatable = false)
     private Long id;
 
+    @Column(name = "date")
+    private Date date;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "bteam_id", referencedColumnName = "id")
@@ -39,10 +42,17 @@ public class Game {
     @JoinColumn(name = "tournament_id", referencedColumnName = "id")
     private Tournament tournament;
 
+
     public Game() {
     }
 
     public Game(Team blueteam, Team redteam) {
+        this.blueteam = blueteam;
+        this.redteam = redteam;
+    }
+
+    public Game(Date date, Team blueteam, Team redteam) {
+        this.date = date;
         this.blueteam = blueteam;
         this.redteam = redteam;
     }
@@ -87,5 +97,13 @@ public class Game {
 
     public void setWinner(Team winner) {
         this.winner = winner;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 }
