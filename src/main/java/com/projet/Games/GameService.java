@@ -6,6 +6,7 @@ import com.projet.Tournament.Tournament;
 import com.projet.Tournament.TournamentRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -37,11 +38,12 @@ public class GameService {
 
     }
 
-    public void updateGame(Long game_id, Long rteam_id, Long bteam_id) {
+    public void updateGame(Long game_id, Long rteam_id, Long bteam_id, Date date) {
         Optional<Game> g = gameRepository.findById(game_id);
         if(!g.isPresent()){
             throw new IllegalStateException("Game " + game_id + " does not exist");
         }
+
         if(rteam_id!= null &&
                 !Objects.equals(g.get().getRedteam().getId(), rteam_id) &&
                 !Objects.equals(g.get().getBlueteam().getId(), rteam_id)){
@@ -54,6 +56,7 @@ public class GameService {
             }
             g.get().setRedteam(t.get());
         }
+
         if(bteam_id!= null &&
                 !Objects.equals(g.get().getBlueteam().getId(), bteam_id) &&
                 !Objects.equals(g.get().getRedteam().getId(), bteam_id)){
@@ -66,6 +69,7 @@ public class GameService {
             }
             g.get().setBlueteam(t.get());
         }
+
        /* if(winner_id!= null){
             if(!Objects.equals(g.get().getBlueteam().getId(), winner_id) &&
                             !Objects.equals(g.get().getRedteam().getId(), winner_id)){
@@ -74,6 +78,15 @@ public class GameService {
             Optional<Team> t = teamRepository.findById(winner_id);
             g.get().setWinner(t.get());
         }*/
+
+        if(date!=null && !Objects.equals(date, g.get().getDate())){
+            Tournament t = g.get().getTournament();
+            if(t.getStartdate() == null|| t.getStartdate().after(date)){
+                t.setStartdate(date);
+            }
+            g.get().setDate(date);
+
+        }
 
 
     }
