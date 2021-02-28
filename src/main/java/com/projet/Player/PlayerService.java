@@ -2,9 +2,6 @@ package com.projet.Player;
 
 import com.projet.Team.Team;
 import com.projet.Team.TeamRepository;
-import com.projet.Tournament.Tournament;
-import com.projet.Tournament.TournamentRepository;
-import net.bytebuddy.implementation.bytecode.Throw;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

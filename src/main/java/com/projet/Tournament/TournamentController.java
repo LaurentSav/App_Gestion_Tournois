@@ -18,7 +18,6 @@ public class TournamentController {
         this.tournamentService = tournamentService;
     }
 
-    @PreAuthorize("isAuthenticated()")
     @GetMapping
     public List<Tournament> getTournaments(){
         return tournamentService.getTournaments();
@@ -41,7 +40,7 @@ public class TournamentController {
         tournamentService.deleteTournament(tournamentId);
     }
 
-    @PutMapping({"onlyForAuthenticated", "/{tournamentId}"} )
+    @PutMapping({ "/{tournamentId}"} )
     public void updateTournament(
             @PathVariable("tournamentId") Long tournamentId,
             @RequestParam(required = false) String name,
@@ -49,5 +48,13 @@ public class TournamentController {
             @RequestParam(required = false) Integer nb_participants){
         tournamentService.updateTournament(tournamentId, name, is_private, nb_participants);
     }
+
+    @PutMapping({"/start/{tournamentId}"} )
+    public void startTournament(@PathVariable("tournamentId") Long tournamentId){
+        tournamentService.startTournament(tournamentId);
+    }
+
+
+
 
 }

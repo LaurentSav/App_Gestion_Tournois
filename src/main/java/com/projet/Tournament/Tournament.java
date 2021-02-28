@@ -2,6 +2,7 @@ package com.projet.Tournament;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.projet.Games.Game;
 import com.projet.Team.Team;
 import com.projet.Users.User;
 import net.bytebuddy.dynamic.loading.InjectionClassLoader;
@@ -42,19 +43,58 @@ public class Tournament {
 
     @Column(name = "nb_participants")
     private Integer NumberOfParticipants;
-
     @Column(name = "description", nullable = true)
     private String description;
 
     @OneToMany(targetEntity = Team.class , cascade = CascadeType.ALL)
     @JoinColumn(name = "tournament_id", referencedColumnName = "id")
     private List<Team> teams;
+    @OneToMany(targetEntity = Game.class , cascade = CascadeType.ALL)
+    @JoinColumn(name = "tournament_id", referencedColumnName = "id")
+    private List<Game> Games ;
+    @Column(name = "started", nullable = false)
+    private Boolean started;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User owner;
 
+
+    public Tournament() {
+    }
+
+    public Tournament(String name, Boolean isPrivate, Integer numberOfParticipants, String description, User owner) {
+        this.name = name;
+        this.isPrivate = isPrivate;
+        NumberOfParticipants = numberOfParticipants;
+        this.description = description;
+        this.owner = owner;
+    }
+
+    public Tournament(String name, Boolean isPrivate, Integer numberOfParticipants) {
+        this.name = name;
+        this.isPrivate = isPrivate;
+        this.NumberOfParticipants = numberOfParticipants;
+        this.started = false;
+    }
+
+    public Tournament (Long id, String name,
+                       Boolean isPrivate, Integer numberOfParticipants) {
+        this.name = name;
+
+        this.id = id;
+        this.isPrivate = isPrivate;
+        this.NumberOfParticipants = numberOfParticipants;
+        this.started = false;
+    }
+
+
+    // main constructor we're using
     public Tournament(String name, Boolean isPrivate, Integer numberOfParticipants, User owner) {
         this.name = name;
         this.isPrivate = isPrivate;
         NumberOfParticipants = numberOfParticipants;
         this.owner = owner;
+        this.started = false;
     }
 
     public String getGame() {
@@ -81,9 +121,6 @@ public class Tournament {
         this.owner = owner;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private User owner;
 
     public List<Team> getTeams() {
         return teams;
@@ -133,15 +170,6 @@ public class Tournament {
         this.owner = user;
     }
 
-    public Tournament (Long id, String name,
-                       Boolean isPrivate, Integer numberOfParticipants) {
-        this.name = name;
-
-        this.id = id;
-        this.isPrivate = isPrivate;
-        this.NumberOfParticipants = numberOfParticipants;
-
-    }
 
     public Long getId() {
         return id;
@@ -167,6 +195,22 @@ public class Tournament {
         isPrivate = aPrivate;
     }
 
+    public Boolean getStarted() {
+        return started;
+    }
+
+    public void setStarted(Boolean started) {
+        this.started = started;
+    }
+
+    public List<Game> getGames() {
+        return Games;
+    }
+
+    public void setGames(List<Game> games) {
+        Games = games;
+    }
+
     @Override
     public String toString() {
         return "Tournament{" +
@@ -174,5 +218,13 @@ public class Tournament {
                 ", id=" + id +
                 ", isPrivate=" + isPrivate +
                 '}';
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }
