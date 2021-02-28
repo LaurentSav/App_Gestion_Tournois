@@ -2,8 +2,6 @@ package com.projet.Tournament;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,14 +24,14 @@ public class TournamentController {
     }
 
     @PostMapping
-    public void registerNewTournament(@RequestBody Tournament tournament){
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    public void registerNewTournament(Tournament tournament){
+        /*Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         if (principal instanceof UserDetails) {
             String username = ((UserDetails)principal).getUsername();
         } else {
             String username = principal.toString();
-        }
+        }*/
         tournamentService.addNewTournament(tournament);
     }
 

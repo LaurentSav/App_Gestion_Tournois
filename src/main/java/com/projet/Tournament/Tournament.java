@@ -6,21 +6,17 @@ import com.projet.Games.Game;
 import com.projet.Team.Team;
 import com.projet.Users.User;
 import net.bytebuddy.dynamic.loading.InjectionClassLoader;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 
+import java.util.Date;
 import java.util.List;
 
 import static javax.persistence.GenerationType.SEQUENCE;
 
 @Entity(name = "Tournament")
-@Table(
-        name = "tournament",
-        uniqueConstraints = {
-                @UniqueConstraint(name = "tournament_name_unique", columnNames = "name")
-        }
-)
-@JsonIgnoreProperties("teams")
+@Table(name = "tournament")
 public class Tournament {
     @Id
     @SequenceGenerator(
@@ -32,19 +28,24 @@ public class Tournament {
             strategy = SEQUENCE,
             generator = "tournament_sequence"
     )
+    /*---ATTRIBUTS---*/
     @Column(name = "id", updatable = false)
     private Long  id;
-    @Column(
-            name = "name",
-            nullable = false
-    )
+
+    @Column(name = "name",nullable = false)
     private String name;
+
     @Column(name = "private", nullable = false)
     private Boolean isPrivate;
+
+    @Column(name = "game", nullable = false)
+    private String game;
+
     @Column(name = "nb_participants")
     private Integer NumberOfParticipants;
-    @Column(name = "description")
+    @Column(name = "description", nullable = true)
     private String description;
+
     @OneToMany(targetEntity = Team.class , cascade = CascadeType.ALL)
     @JoinColumn(name = "tournament_id", referencedColumnName = "id")
     private List<Team> teams;
@@ -96,6 +97,22 @@ public class Tournament {
         this.started = false;
     }
 
+    public String getGame() {
+        return game;
+    }
+
+    public void setGame(String game) {
+        this.game = game;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public User getOwner() {
         return owner;
     }
@@ -125,6 +142,33 @@ public class Tournament {
         NumberOfParticipants = numberOfParticipants;
     }
 
+    public Tournament() {
+    }
+
+    public Tournament(String name, String game, Boolean isPrivate, Integer numberOfParticipants) {
+        this.name = name;
+        this.game = game;
+        this.isPrivate = isPrivate;
+        this.NumberOfParticipants = numberOfParticipants;
+        this.description = "";
+    }
+
+    public Tournament(String name, String game, Boolean isPrivate, Integer numberOfParticipants, String description) {
+        this.name = name;
+        this.game = game;
+        this.isPrivate = isPrivate;
+        this.NumberOfParticipants = numberOfParticipants;
+        this.description = description;
+    }
+
+    public Tournament(String name, String game, Boolean isPrivate, Integer numberOfParticipants, String description, User user) {
+        this.name = name;
+        this.game = game;
+        this.isPrivate = isPrivate;
+        this.NumberOfParticipants = numberOfParticipants;
+        this.description = description;
+        this.owner = user;
+    }
 
 
     public Long getId() {
