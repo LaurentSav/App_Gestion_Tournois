@@ -32,7 +32,7 @@ public class Tournament {
     @Column(name = "name",nullable = false)
     private String name;
 
-    @Column(name = "private", nullable = false)
+    @Column(name = "private")
     private Boolean isPrivate = false;
 
     @Column(name = "game", nullable = false)
