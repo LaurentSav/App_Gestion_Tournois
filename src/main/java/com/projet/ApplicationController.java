@@ -3,10 +3,15 @@ package com.projet;
 import com.projet.Tournament.Tournament;
 import com.projet.Tournament.TournamentRepository;
 import com.projet.Tournament.TournamentService;
+import com.projet.Users.CustomUserDetails;
+import com.projet.Users.CustomUserDetailsService;
 import com.projet.Users.User;
 import com.projet.Users.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -27,6 +32,9 @@ public class ApplicationController {
 
     @Autowired
     private TournamentService tournamentService;
+
+    @Autowired
+    private CustomUserDetailsService customUserDetailsService;
 
     @GetMapping("")
     public String viewHomePage(Model model, @RequestParam(defaultValue = "1") int p) {
@@ -61,11 +69,11 @@ public class ApplicationController {
 
     @PostMapping("/account")
     public String confirmEdit(User user){
-        User user1 = userRepo.findByEmail(user.getEmail());
         if (user == null) {
             throw new UsernameNotFoundException("User not found");
         }
-        userRepo.updateUser(user1.getId(),user1.getEmail(),user1.getFirstName(),user1.getLastName());
+        customUserDetailsService.updateUser(user.getEmail(),user.getFirstName(),user.getLastName());
+
         return "account";
     }
 

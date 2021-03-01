@@ -8,6 +8,8 @@ import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
@@ -17,8 +19,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
     public User findByEmail(String email);
 
     @Transactional
-    @Modifying
+    @Modifying(clearAutomatically = true)
     @Query("UPDATE User u SET u.email = :email, u.firstName = :firstName, u.lastName = :lastName WHERE u.id = :id")
     public void updateUser(@Param("id") long id, @Param("email") String email, @Param("firstName") String firstName, @Param("lastName") String lastName);
+
 
 }
