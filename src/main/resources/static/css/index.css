@@ -1,0 +1,16 @@
+.navbar-nav .nav-link {
+    color: white;
+}
+
+.min-height{
+    min-height: 100vh;
+    height: 100vh;
+}
+
+.margin5{
+    margin-left: 10%;
+}
+
+.marginbot2{
+    margin-bottom: 2%;
+}

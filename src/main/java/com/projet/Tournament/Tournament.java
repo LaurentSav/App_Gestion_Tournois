@@ -32,6 +32,7 @@ public class Tournament {
     @Column(name = "name",nullable = false)
     private String name;
 
+
     @Column(name = "private", nullable = false)
     private Boolean isPrivate = false;
 
@@ -109,7 +110,6 @@ public class Tournament {
     public void setOwner(User owner) {
         this.owner = owner;
     }
-
 
     public List<Team> getTeams() {
         return teams;

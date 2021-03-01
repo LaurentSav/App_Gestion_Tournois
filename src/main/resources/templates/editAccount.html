@@ -1,13 +1,14 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
     <head>
-        <meta charset="ISO-8859-1">
-        <title>Sign Up</title>
+        <meta charset="UTF-8">
+        <title>Tournoi de Jeux</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
-        <link rel="stylesheet" href="css/style.css">
-        <script type="text/javascript" src="/webjars/jquery/jquery.min.js"></script>
-        <script type="text/javascript" src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="/css/style.css">
     </head>
+
     <body>
         <div class="container-fluid primary-color">
             <nav class="navbar navbar-expand">
@@ -52,53 +53,64 @@
                 </ul>
             </nav>
         </div>
-        <div class="min-height">
-            <div class="container text-center marginTop5">
-                <div>
-                    <h1>Sign Up</h1>
+
+        <div class="container text-center marginTop5 min-height" sec:authorize="isAuthenticated()">
+
+            <div class="container min-height">
+                <div class = "marginTop5">
+                    <h1> Edit your Account </h1>
                 </div>
-                <form th:action="@{/process_register}" th:object="${user}"
-                      method="post" style="max-width: 600px; margin: 0 auto;">
-                    <div class="m-3">
-                        <div class="form-group row marginTop5">
-                            <label class="col-4 col-form-label">E-mail: </label>
-                            <div class="col-8">
-                                <input type="email" th:field="*{email}" class="form-control" required />
-                            </div>
-                        </div>
 
-                        <div class="form-group row marginTop5">
-                            <label class="col-4 col-form-label">Password: </label>
-                            <div class="col-8">
-                                <input type="password" th:field="*{password}" class="form-control"
-                                       required minlength="6" maxlength="10"/>
-                            </div>
-                        </div>
+                <form th:action="@{/account}" th:object="${user}"  method="post">
+                    <table class="table table-striped table-bordered marginTop5">
+                        <thead>
+                            <tr>
+                                <th colspan="2">
+                                    <div class="d-flex justify-content-center">
+                                        <div class="p-2">
 
-                        <div class="form-group row marginTop5">
-                            <label class="col-4 col-form-label">First Name: </label>
-                            <div class="col-8">
-                                <input type="text" th:field="*{firstName}" class="form-control"
-                                       required minlength="2" maxlength="20"/>
-                            </div>
-                        </div>
+                                        </div>
+                                        <div class="p-2">
+                                            <h2>Information Utilisateurs</h2>
+                                        </div>
+                                    </div>
+                                </th>
+                            </tr>
+                        </thead>
 
-                        <div class="form-group row marginTop5">
-                            <label class="col-4 col-form-label">Last Name: </label>
-                            <div class="col-8">
-                                <input type="text" th:field="*{lastName}" class="form-control"
-                                       required minlength="2" maxlength="20" />
-                            </div>
-                        </div>
+                        <tbody>
+                            <tr>
+                                <td><h3>Adresse Mail</h3></td>
+                                <td><h3><input type="email" th:name="email" th:id="name" th:value="${#authentication.getPrincipal().getUsername()}"/></h3></td>
+                            </tr>
+                            <tr>
+                                <td><h3>Prénom</h3></td>
+                                <td><h3><input type="text" th:name="firstName" th:id="firstName" th:value="${#authentication.getPrincipal().getFirstName()}"/></h3></td>
+                            </tr>
+                            <tr>
+                                <td><h3>Nom</h3></td>
+                                <td><h3><input type="text" th:name="lastName" th:id="lastName"th:value="${#authentication.getPrincipal().getLastName()}"/></h3></td>
+                            </tr>
+                        </tbody>
+                    </table>
 
-                        <div class="marginTop5">
-                            <button type="submit" class="btn btn-primary">Sign Up</button>
-                        </div>
+                    <div class="marginTop5">
+                        <input type="submit" class="btn btn-warning" value="Edit" />
                     </div>
+
                 </form>
+
+
             </div>
 
         </div>
 
     </body>
+
+    <footer>
+        <div class="container-fluid text-center p-3 primary-color">
+            <h5 class="text-white">© 2021 Copyright </h5>
+            <h5 class="text-white">Laurent SAVIVANH - Fathi VANDY - Hamza KARHAT</h5>
+        </div>
+    </footer>
 </html>
