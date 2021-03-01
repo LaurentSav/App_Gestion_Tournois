@@ -110,5 +110,10 @@ public class ApplicationController {
         return "register_success";
     }
 
+    @GetMapping("/createtournament")
+    public String createTournament(Model model) {
+        model.addAttribute("tournament", new Tournament());
+        return "createtournament";
+    }
 
 }

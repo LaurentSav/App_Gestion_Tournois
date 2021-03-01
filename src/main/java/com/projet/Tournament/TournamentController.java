@@ -2,10 +2,12 @@ package com.projet.Tournament;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,7 +30,7 @@ public class TournamentController {
     }
 
     @PostMapping
-    public void registerNewTournament(@RequestBody Tournament tournament){
+    public void registerNewTournament(Tournament tournament){
         /*Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         if (principal instanceof UserDetails) {
@@ -50,7 +52,7 @@ public class TournamentController {
         tournamentService.deleteTournament(tournamentId);
     }
 
-    @PutMapping({"onlyForAuthenticated", "/{tournamentId}"} )
+    @PutMapping({ "/{tournamentId}"} )
     public void updateTournament(
             @PathVariable("tournamentId") Long tournamentId,
             @RequestParam(required = false) String name,
@@ -58,5 +60,13 @@ public class TournamentController {
             @RequestParam(required = false) Integer nb_participants){
         tournamentService.updateTournament(tournamentId, name, is_private, nb_participants);
     }
+
+    @PutMapping({"/start/{tournamentId}"} )
+    public void startTournament(@PathVariable("tournamentId") Long tournamentId){
+        tournamentService.startTournament(tournamentId);
+    }
+
+
+
 
 }

@@ -1,7 +1,10 @@
+
 @import url(index.css);
 @import url(account.css);
 @import url(login_form.css);
 @import url(search.css);
+@import url(createtournament.css);
+
 
 html, body{
     height: 100%;
@@ -10,3 +13,4 @@ html, body{
 .primary-color{
     background-color: #2c3e50;
 }
+
