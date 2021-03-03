@@ -1,11 +1,19 @@
 package com.projet.Tournament;
 
+import com.projet.Player.PlayerService;
+import com.projet.Users.CustomUserDetails;
+import com.projet.Users.CustomUserDetailsService;
+import com.projet.Users.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
+import java.security.Principal;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -15,6 +23,9 @@ public class TournamentService {
 
     @Autowired
     private final TournamentRepository tournamentRepository;
+
+    @Autowired
+    private CustomUserDetailsService customUserDetailsService;
 
     public TournamentService(TournamentRepository tournamentRepository) {
         this.tournamentRepository = tournamentRepository;
@@ -36,9 +47,19 @@ public class TournamentService {
         return tournamentRepository.findAll(pageable);
     }
 
+    public Page<Tournament> getUserTournaments(int pageNum,CustomUserDetails user){
+        int pagesize = 20;
+        Pageable pageable = PageRequest.of(pageNum -1, pagesize);
+        return tournamentRepository.findTournamentbyUserId(user.getId(), pageable);
+    }
 
-    public void addNewTournament(Tournament tournament){
+
+
+    public void addNewTournament(Tournament tournament, Principal principal){
         Optional<Tournament> tournamentOptional = tournamentRepository.findTournamentByName(tournament.getName());
+        User user = customUserDetailsService.loadUser(principal.getName());
+        tournament.setOwner(user);
+
         if(tournamentOptional.isPresent()){
             throw
                     new IllegalStateException("Name taken");

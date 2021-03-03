@@ -12,12 +12,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,9 +28,6 @@ import java.util.Optional;
 public class ApplicationController {
     @Autowired
     private UserRepository userRepo;
-
-    @Autowired
-    private TournamentRepository trepo;
 
     @Autowired
     private TournamentService tournamentService;
@@ -115,5 +114,23 @@ public class ApplicationController {
         model.addAttribute("tournament", new Tournament());
         return "createtournament";
     }
+
+    @GetMapping("/yourtournament")
+    public String yourtournament(Model model, @RequestParam(defaultValue = "1") int p, Principal principal){
+        if(principal == null){
+            return "index";
+        }
+        CustomUserDetails user1 = customUserDetailsService.loadUserByUsername(principal.getName());
+        Page<Tournament> page = tournamentService.getUserTournaments(p, user1);
+        model.addAttribute("listTournoi", page);
+        List<Tournament> listTournoi = page.getContent();
+        model.addAttribute("currentPage", p);
+        model.addAttribute("previousPage", p-1);
+        model.addAttribute("nextPage", p +1);
+        model.addAttribute("totalPage", page.getTotalPages());
+        model.addAttribute("listTournoi", listTournoi);
+        return "your_tournament";
+    }
+
 
 }
