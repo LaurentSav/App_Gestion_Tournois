@@ -1,5 +1,7 @@
 package com.projet.Team;
 
+import com.projet.Player.Player;
+import com.projet.Player.PlayerService;
 import com.projet.Tournament.Tournament;
 import com.projet.Tournament.TournamentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +19,14 @@ public class TeamService {
 
     @Autowired
     private TeamRepository teamRepository;
+
+    @Autowired
     private TournamentRepository tournamentRepository;
+
+    @Autowired
+    private PlayerService playerService;
+
+
 
     public TeamService(TeamRepository teamRepository, TournamentRepository tournamentRepository) {
         this.tournamentRepository = tournamentRepository;
@@ -26,13 +35,12 @@ public class TeamService {
 
     @Transactional
     public List<Team> getTeams(@RequestParam Long tournament_id) {
-        Optional<Tournament> optionalTournament = tournamentRepository.findById(tournament_id);
-        if(!optionalTournament.isPresent()){
-            throw new IllegalStateException("Tournament does not exist");
-        }
-        return teamRepository.findTeamsBytournament(optionalTournament.get());
+        return teamRepository.findTeamsBytournament(tournament_id);
     }
 
+    public List<Player> getTeamParticipant(@RequestParam Long team_id){
+        return playerService.getTeamPlayers(team_id);
+    }
 
     public void deleteTeam(Long teamId) {
         Optional<Team> team = teamRepository.findById(teamId);

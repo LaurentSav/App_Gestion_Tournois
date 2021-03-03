@@ -1,8 +1,12 @@
 package com.projet.Team;
 
+import com.projet.Player.Player;
+import com.projet.Tournament.Tournament;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -23,6 +27,15 @@ public class TeamController {
     @PostMapping
     public void registerNewTeam(@RequestBody Team team){
         teamService.addNewTeam(team);
+    }
+
+
+    @GetMapping( "/{team_id}")
+    public String findParticipant(Model model, @PathVariable Long team_id, Principal principal){
+
+        List<Player> listplayer = teamService.getTeamParticipant(team_id);
+        model.addAttribute("players", listplayer);
+        return "view_player";
     }
 
     @DeleteMapping("/{team_Id}")

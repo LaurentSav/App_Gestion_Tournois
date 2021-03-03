@@ -1,6 +1,8 @@
 package com.projet.Tournament;
 
 import com.projet.Player.PlayerService;
+import com.projet.Team.Team;
+import com.projet.Team.TeamService;
 import com.projet.Users.CustomUserDetailsService;
 import com.projet.Users.User;
 import com.projet.Users.UserRepository;
@@ -27,6 +29,9 @@ public class TournamentController {
 
     @Autowired
     private PlayerService playerService;
+
+    @Autowired
+    private TeamService teamService;
 
     @Autowired
     public TournamentController(TournamentService tournamentService) {
@@ -66,14 +71,16 @@ public class TournamentController {
         model.addAttribute("tournament",t);
         return "view_tournament";
     }
+
     @GetMapping( "/{tournamentId}/participant")
-    public String viewParticipant(Model model, @PathVariable Long tournamentId){
-        model.addAttribute("player",playerService.getPlayers());
+    public String viewParticipant(Model model, @PathVariable("tournamentId") Long tournamentId){
+        List<Team> t = teamService.getTeams(tournamentId);
+        model.addAttribute("team", t);
         return "tournament_participant";
     }
 
     @GetMapping( "/{tournamentId}/planning")
-    public String viewPlanning(Model model, @PathVariable Long tournamentId, Principal principal){
+    public String viewPlanning(Model model, @PathVariable("tournamentId") Long tournamentId, Principal principal){
         if(principal != null){
             return "tournament_planning";
         }
@@ -81,7 +88,7 @@ public class TournamentController {
     }
 
     @GetMapping( "/{tournamentId}/setting")
-    public String viewSetting(Model model, @PathVariable Long tournamentId, Principal principal){
+    public String viewSetting(Model model, @PathVariable("tournamentId") Long tournamentId, Principal principal){
 
         if(principal == null){
             return "error";

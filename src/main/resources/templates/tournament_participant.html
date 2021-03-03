@@ -61,11 +61,13 @@
                     <thead class="thead-dark">
                     <tr>
                         <th>Name</th>
+                        <th>View</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:each="tournois: ${listTournoi}">
-                        <td th:text="${tournois.name}">Name</td>
+                    <tr th:each="teams: ${team}">
+                        <td th:text="${teams.name}">Name</td>
+                        <td><a th:href="/tournament/{id}/teams/{teamid} (id=${tournois.id}, teamid=${teams.id})"><input type="submit" class="btn btn-primary" value="View" /></a></td>
                     </tr>
                     </tbody>
                 </table>
