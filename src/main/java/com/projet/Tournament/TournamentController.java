@@ -1,5 +1,9 @@
 package com.projet.Tournament;
 
+import com.projet.Player.PlayerService;
+import com.projet.Users.CustomUserDetailsService;
+import com.projet.Users.User;
+import com.projet.Users.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 
@@ -10,6 +14,7 @@ import org.springframework.ui.Model;
 
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 
@@ -17,7 +22,11 @@ import java.util.List;
 @RequestMapping(path = "tournament")
 public class TournamentController {
 
+    @Autowired
     private final TournamentService tournamentService;
+
+    @Autowired
+    private PlayerService playerService;
 
     @Autowired
     public TournamentController(TournamentService tournamentService) {
@@ -29,8 +38,8 @@ public class TournamentController {
         return tournamentService.getTournaments();
     }
 
-    @PostMapping
-    public void registerNewTournament(Tournament tournament){
+    @PostMapping("/register")
+    public String registerNewTournament(Tournament tournament, Principal principal){
         /*Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         if (principal instanceof UserDetails) {
@@ -38,18 +47,49 @@ public class TournamentController {
         } else {
             String username = principal.toString();
         }*/
-        tournamentService.addNewTournament(tournament);
+
+        tournamentService.addNewTournament(tournament, principal);
+        return "create_success";
     }
 
     @GetMapping( "/{tournamentId}")
-    public String findById(Model model, @PathVariable Long tournamentId){
-        model.addAttribute("tournament",tournamentService.getTournament(tournamentId));
+    public String findById(Model model, @PathVariable Long tournamentId, Principal principal){
+
+        Tournament t = tournamentService.getTournament(tournamentId);
+        if(principal != null){
+            if(t.getOwner().getEmail().equals(principal.getName())){
+                model.addAttribute("owner", true);
+            }
+        }else{
+            model.addAttribute("owner", false);
+        }
+        model.addAttribute("tournament",t);
         return "view_tournament";
+    }
+    @GetMapping( "/{tournamentId}/participant")
+    public String viewParticipant(Model model, @PathVariable Long tournamentId){
+        model.addAttribute("player",playerService.getPlayers());
+        return "tournament_participant";
+    }
+
+    @GetMapping( "/{tournamentId}/planning")
+    public String viewPlanning(Model model, @PathVariable Long tournamentId, Principal principal){
+        if(principal != null){
+            return "tournament_planning";
+        }
+        return "redirect:/";
+    }
+
+    @GetMapping( "/{tournamentId}/setting")
+    public String viewSetting(Model model, @PathVariable Long tournamentId){
+        model.addAttribute("tournament",tournamentService.getTournament(tournamentId));
+        return "tournament_setting";
     }
 
     @DeleteMapping( "/{tournamentId}")
-    public void deleteTournamentById(@PathVariable("tournamentId") Long tournamentId){
+    public String deleteTournamentById(@PathVariable("tournamentId") Long tournamentId){
         tournamentService.deleteTournament(tournamentId);
+        return "redirect:/";
     }
 
     @PutMapping({ "/{tournamentId}"} )

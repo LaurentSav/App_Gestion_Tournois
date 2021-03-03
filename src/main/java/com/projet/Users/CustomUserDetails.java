@@ -23,6 +23,12 @@ public class CustomUserDetails implements UserDetails {
         return user.getPassword();
     }
 
+    public Long getId(){
+        return user.getId();
+    }
+
+
+
     @Override
     public String getUsername() {
         return user.getEmail();
@@ -31,6 +37,8 @@ public class CustomUserDetails implements UserDetails {
     public String getFirstName(){ return user.getFirstName(); }
 
     public String getLastName(){ return user.getLastName(); }
+
+
 
     @Override
     public boolean isAccountNonExpired() {

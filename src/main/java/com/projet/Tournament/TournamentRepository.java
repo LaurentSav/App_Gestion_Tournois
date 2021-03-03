@@ -1,5 +1,7 @@
 package com.projet.Tournament;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -15,6 +17,9 @@ public interface TournamentRepository
 
     @Query("SELECT t FROM Tournament t WHERE t.name LIKE CONCAT('%',:name,'%')")
     List<Tournament> findTournamentByWord(@Param("name") String word);
+
+    @Query(value = "SELECT t FROM Tournament t WHERE t.owner.id = :id")
+    Page<Tournament> findTournamentbyUserId(@Param("id") Long id, Pageable pageable);
 
     List<Tournament> findAllByIsPrivateIsFalse();
 
