@@ -55,57 +55,57 @@
     </div>
         <div class="min-height">
             <div sec:authorize="isAuthenticated()">
-                <form th:action="@{/tournament/register}" th:object="${tournament}"
-                      method="post" style="max-width: 600px; margin: 0 auto;">
-                    <div class="m-3">
-                        <div class="form-group row">
-                            <label class="col-4 col-form-label">Nom du tournoi </label>
-                            <div class="col-8">
-                                <input type="text" th:field="*{name}" class="form-control" required />
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label class="col-4 col-form-label">Nom du Jeu </label>
-                            <div class="col-8">
-                                <input type="text" th:field="*{game}" class="form-control" required/>
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label class="col-4 col-form-label">Nombre de Participants</label>
-                            <div class="col-8">
-                                <input type="number" th:field="*{numberOfParticipants}" class="form-control" required />
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label class="col-4 col-form-label">Description</label>
-                            <div class="col-8">
-                                <textarea th:field="*{description}" class="form-control"></textarea>
-                            </div>
-                        </div>
-
-                        <div class="form-check row">
-                            <div class="d-flex flex-row">
-                                <label>Tournoi prive</label>
-                                <input type="checkbox" th:field="*{private}" class="marginleft5" />
+                    <form th:action="@{/tournament/register}" th:object="${tournament}"
+                          method="post" style="max-width: 600px; margin: 0 auto;">
+                        <div class="m-3">
+                            <div class="form-group row">
+                                <label class="col-4 col-form-label">Nom du tournoi </label>
+                                <div class="col-8">
+                                    <input type="text" th:field="*{name}" class="form-control" required />
+                                </div>
                             </div>
 
+                            <div class="form-group row">
+                                <label class="col-4 col-form-label">Nom du Jeu </label>
+                                <div class="col-8">
+                                    <input type="text" th:field="*{game}" class="form-control" required/>
+                                </div>
+                            </div>
 
-                        </div>
+                            <div class="form-group row">
+                                <label class="col-4 col-form-label">Nombre de Participants</label>
+                                <div class="col-8">
+                                    <input type="number" th:field="*{numberOfParticipants}" class="form-control" required />
+                                </div>
+                            </div>
 
-                        <div>
-                            <button type="submit" class="btn btn-primary">Creer</button>
+                            <div class="form-group row">
+                                <label class="col-4 col-form-label">Description</label>
+                                <div class="col-8">
+                                    <textarea th:field="*{description}" class="form-control"></textarea>
+                                </div>
+                            </div>
+
+                            <div class="form-check row">
+                                <div class="d-flex flex-row">
+                                    <label>Tournoi prive</label>
+                                    <input type="checkbox" th:field="*{private}" class="marginleft5" />
+                                </div>
+
+
+                            </div>
+
+                            <div>
+                                <button type="submit" class="btn btn-primary">Creer</button>
+                            </div>
                         </div>
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
             <div sec:authorize="isAnonymous()" class="marginTop5">
                 <h1 class="text-center"> Vous n'etes pas connecte !</h1>
                 <h1 class="text-center"> Veuillez vous connecter / vous inscrire pour creer un tournois !</h1>
             </div>
-        </div>
 
     </body>
     <footer>

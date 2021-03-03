@@ -73,20 +73,21 @@
                         <th>Nb de participants</th>
                         <th>View</th>
                         <th>Delete</th>
+                        <th>Update</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <form th:action="@{/tournament/{id} (id=${tournament.id})}" th:method="delete">
-                        <input type="submit" class="btn btn-danger" value="Delete" />
-                    </form>
                     <tr th:each="tournois: ${listTournoi}">
                         <td th:text="${tournois.name}">Name</td>
                         <td th:text="${tournois.game}">Game</td>
                         <td th:text="${tournois.private}">private</td>
                         <td th:text="${tournois.numberOfParticipants}">nb participant</td>
                         <td><a th:href="@{/tournament/{id}(id=${tournois.id})}"><input type="submit" class="btn btn-primary" value="View" /></a></td>
-                        <td><form th:action="@{/tournament/{id} (id=${tournament.id})}" th:method="delete">
+                        <td><form th:action="@{/tournament/{id} (id=${tournois.id})}" th:method="delete">
                             <input type="submit" class="btn btn-danger" value="Delete" />
+                        </form></td>
+                        <td><form th:action="@{/tournament/{id}/setting (id=${tournois.id})}" th:method="get">
+                            <input type="submit" class="btn btn-light" value="Update" />
                         </form></td>
                     </tr>
                     </tbody>
