@@ -81,7 +81,11 @@ public class TournamentController {
     }
 
     @GetMapping( "/{tournamentId}/setting")
-    public String viewSetting(Model model, @PathVariable Long tournamentId){
+    public String viewSetting(Model model, @PathVariable Long tournamentId, Principal principal){
+
+        if(principal == null){
+            return "error";
+        }
         model.addAttribute("tournament",tournamentService.getTournament(tournamentId));
         return "tournament_setting";
     }
@@ -92,13 +96,19 @@ public class TournamentController {
         return "redirect:/";
     }
 
-    @PutMapping({ "/{tournamentId}"} )
-    public void updateTournament(
+    @PostMapping({ "/{tournamentId}/update"} )
+    public String updateTournament(
             @PathVariable("tournamentId") Long tournamentId,
             @RequestParam(required = false) String name,
+            @RequestParam(required = false) String game,
             @RequestParam(required = false) Boolean is_private,
-            @RequestParam(required = false) Integer nb_participants){
-        tournamentService.updateTournament(tournamentId, name, is_private, nb_participants);
+            @RequestParam(required = false) Integer nb_participants,
+            @RequestParam(required = false) String description,
+            Model model){
+        tournamentService.updateTournament(tournamentId, name,game, is_private, nb_participants, description);
+        model.addAttribute("tid", tournamentId);
+        model.addAttribute("tour", true);
+        return "edition_success";
     }
 
     @PutMapping({"/start/{tournamentId}"} )
