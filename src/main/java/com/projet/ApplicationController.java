@@ -1,5 +1,6 @@
 package com.projet;
 
+import com.projet.Team.Team;
 import com.projet.Tournament.Tournament;
 import com.projet.Tournament.TournamentRepository;
 import com.projet.Tournament.TournamentService;

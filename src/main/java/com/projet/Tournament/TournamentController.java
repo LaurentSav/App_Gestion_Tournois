@@ -1,6 +1,9 @@
 package com.projet.Tournament;
 
 import com.projet.Player.PlayerService;
+import com.projet.Team.Team;
+import com.projet.Team.TeamController;
+import com.projet.Team.TeamService;
 import com.projet.Users.CustomUserDetailsService;
 import com.projet.Users.User;
 import com.projet.Users.UserRepository;
@@ -27,6 +30,10 @@ public class TournamentController {
 
     @Autowired
     private PlayerService playerService;
+
+    @Autowired
+    private TeamService teamService;
+
 
     @Autowired
     public TournamentController(TournamentService tournamentService) {
@@ -69,7 +76,16 @@ public class TournamentController {
     @GetMapping( "/{tournamentId}/participant")
     public String viewParticipant(Model model, @PathVariable Long tournamentId){
         model.addAttribute("player",playerService.getPlayers());
+        model.addAttribute("teams",teamService.getTeams(tournamentId));
+        model.addAttribute("tournamentid", tournamentId.toString());
         return "tournament_participant";
+    }
+
+    @GetMapping( "/{tournamentId}/participant/create_team")
+    public String addTeam(Model model, @PathVariable Long tournamentId){
+        model.addAttribute("team",new Team());
+        model.addAttribute("tournamentid",tournamentId);
+        return "create_team";
     }
 
     @GetMapping( "/{tournamentId}/planning")
