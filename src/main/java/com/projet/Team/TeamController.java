@@ -33,7 +33,7 @@ public class TeamController {
     public String registerNewTeam(Team team, @PathVariable Long tournament_id){
         System.err.println("team tounament id = " + tournament_id);
         teamService.addNewTeam(team, tournament_id);
-        return "redirect:/tournament/" + tournament_id.toString() + "/participant";
+        return "edition_success";
     }
 
 

@@ -83,8 +83,14 @@ public class TournamentController {
     }
 
     @GetMapping( "/{tournamentId}/participant")
-    public String viewParticipant(Model model, @PathVariable("tournamentId") Long tournamentId){
+    public String viewParticipant(Model model, @PathVariable("tournamentId") Long tournamentId, Principal principal){
         List<Team> t = teamService.getTeams(tournamentId);
+        if(principal != null){
+            Tournament t1 = tournamentService.getTournament(tournamentId);
+            if(t1.getOwner().getEmail().equals(principal.getName())){
+                model.addAttribute("owner", true);
+            }
+        }
         model.addAttribute("team", t);
         model.addAttribute("tournois", tournamentId);
         return "tournament_participant";
@@ -106,9 +112,10 @@ public class TournamentController {
         return "view_player";
     }
 
-    @GetMapping( "/{tournamentId}/participant/{teamid}/{playerid}/edit")
-    public String editPlayer(Model model, @PathVariable("tournamentId") Long tournamentId, @PathVariable("teamid") Long teamid, @PathVariable("playerid") Long pid){
-        return "create_player";
+    @DeleteMapping( "/{tournamentId}/participant/{teamid}")
+    public String deleteTeamById(@PathVariable("tournamentId") Long tournamentId, @PathVariable("teamid") Long teamid) {
+        teamService.deleteTeam(teamid);
+        return "edition_success";
     }
 
 
@@ -133,17 +140,26 @@ public class TournamentController {
         model.addAttribute("player", true);
 
         return "edition_success";
-
-
     }
 
+    @GetMapping( "/{tournamentId}/participant/{teamid}/{playerid}/edit")
+    public String EditPlayer(Model model, @PathVariable("tournamentId") Long tournamentId, @PathVariable("teamid") Long teamid, @PathVariable("playerid") Long pid){
+        model.addAttribute("player", new Player());
+        model.addAttribute("teamid", teamid);
+        model.addAttribute("tid", tournamentId);
+        return "create_player";
+    }
+
+
+
     @DeleteMapping( "/{tournamentId}/participant/{teamid}/{playerid}")
-    public String deletePlayerById(@PathVariable("tournamentId") Long tournamentId, @PathVariable("teamid") Long teamid,  @PathVariable("playerid") Long pid){
+    public String deletePlayerById(@PathVariable("tournamentId") Long tournamentId, @PathVariable("teamid") Long teamid,  @PathVariable("playerid") Long pid) {
         playerService.deletePlayer(pid);
-        return "redirect:/";
+        return "edition_success";
+    }
 
     @GetMapping( "/{tournamentId}/participant/create_team")
-    public String addTeam(Model model, @PathVariable Long tournamentId){
+    public String addTeam(Model model, @PathVariable("tournamentId") Long tournamentId){
         model.addAttribute("team",new Team());
         model.addAttribute("tournamentid",tournamentId);
         return "create_team";

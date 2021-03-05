@@ -3,11 +3,9 @@
       xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
     <meta charset="UTF-8">
-    <title>Creation d'une equipe</title>
-    <link rel="stylesheet" type="text/css" href="style.css"/>
-    <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/css/bootstrap.min.css" />
-    <script type="text/javascript" src="/webjars/jquery/jquery.min.js"></script>
-    <script type="text/javascript" src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+    <title>Tournoi de Jeux</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
     <div class="container-fluid primary-color">
@@ -69,11 +67,12 @@
                 </div>
             </form>
         </div>
+        <div sec:authorize="isAnonymous()" class="marginTop5">
+            <h1 class="text-center"> Vous n'etes pas connecte !</h1>
+            <h1 class="text-center"> Veuillez vous connecter / vous inscrire pour creer une equipe !</h1>
+        </div>
     </div>
-    <div sec:authorize="isAnonymous()" class="marginTop5">
-        <h1 class="text-center"> Vous n'etes pas connecte !</h1>
-        <h1 class="text-center"> Veuillez vous connecter / vous inscrire pour creer un tournois !</h1>
-    </div>
+
 
 </body>
 
