@@ -4,6 +4,7 @@ import com.projet.Player.Player;
 import com.projet.Player.PlayerService;
 import com.projet.Tournament.Tournament;
 import com.projet.Tournament.TournamentRepository;
+import com.projet.Tournament.TournamentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +23,7 @@ public class TeamService {
 
     @Autowired
     private TournamentRepository tournamentRepository;
+    private TournamentService tournamentService;
 
     @Autowired
     private PlayerService playerService;
@@ -52,7 +54,7 @@ public class TeamService {
         teamRepository.delete(team.get());
     }
 
-    public void addNewTeam(Team team) {
+    public void addNewTeam(Team team, Long tournamentId) {
         Optional<Team> optionalTeam =
                 teamRepository.findTeamByNameAndTournament(team.getName(), team.getTournament());
         boolean exists = optionalTeam.isPresent();
@@ -61,6 +63,18 @@ public class TeamService {
             throw
                     new IllegalStateException("Team " + team.getName() +" already exists");
         }
+        Optional<Tournament> optionalTournament =
+                tournamentRepository.findById(tournamentId);
+        if(!optionalTournament.isPresent()){
+            throw
+                    new IllegalStateException("Team Tournament does not exist");
+        }
+        if(optionalTournament.get().getTeams().size() >= optionalTournament.get().getNumberOfParticipants()){
+            throw
+                    new IllegalStateException("Tournament full");
+
+        }
+        team.setTournament(tournamentRepository.findById(tournamentId).get());
         teamRepository.save(team);
     }
 

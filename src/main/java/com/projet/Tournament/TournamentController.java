@@ -3,8 +3,12 @@ package com.projet.Tournament;
 import com.projet.Player.Player;
 import com.projet.Player.PlayerService;
 import com.projet.Team.Team;
-import com.projet.Team.TeamService;
+
 import com.projet.Users.CustomUserDetails;
+
+import com.projet.Team.TeamController;
+import com.projet.Team.TeamService;
+
 import com.projet.Users.CustomUserDetailsService;
 import com.projet.Users.User;
 import com.projet.Users.UserRepository;
@@ -37,6 +41,7 @@ public class TournamentController {
 
     @Autowired
     private CustomUserDetailsService userService;
+
 
     @Autowired
     public TournamentController(TournamentService tournamentService) {
@@ -136,6 +141,12 @@ public class TournamentController {
     public String deletePlayerById(@PathVariable("tournamentId") Long tournamentId, @PathVariable("teamid") Long teamid,  @PathVariable("playerid") Long pid){
         playerService.deletePlayer(pid);
         return "redirect:/";
+
+    @GetMapping( "/{tournamentId}/participant/create_team")
+    public String addTeam(Model model, @PathVariable Long tournamentId){
+        model.addAttribute("team",new Team());
+        model.addAttribute("tournamentid",tournamentId);
+        return "create_team";
     }
 
     @GetMapping( "/{tournamentId}/planning")

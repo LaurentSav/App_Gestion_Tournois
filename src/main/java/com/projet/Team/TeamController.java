@@ -1,7 +1,9 @@
 package com.projet.Team;
 
+
 import com.projet.Player.Player;
 import com.projet.Tournament.Tournament;
+import com.projet.Tournament.TournamentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +17,9 @@ public class TeamController {
     private final TeamService teamService;
 
     @Autowired
+    private TournamentService tournamentService;
+
+    @Autowired
     public TeamController(TeamService teamService) {
         this.teamService = teamService;
     }
@@ -24,9 +29,11 @@ public class TeamController {
         return teamService.getTeams(t_id);
     }
 
-    @PostMapping
-    public void registerNewTeam(@RequestBody Team team){
-        teamService.addNewTeam(team);
+    @PostMapping("/{tournament_id}")
+    public String registerNewTeam(Team team, @PathVariable Long tournament_id){
+        System.err.println("team tounament id = " + tournament_id);
+        teamService.addNewTeam(team, tournament_id);
+        return "redirect:/tournament/" + tournament_id.toString() + "/participant";
     }
 
 
@@ -44,7 +51,6 @@ public class TeamController {
         model.addAttribute("player", new Player());
         return "create_player";
     }
-
 
 
     @DeleteMapping("/{team_Id}")
