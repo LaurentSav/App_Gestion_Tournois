@@ -65,6 +65,7 @@ public class TournamentService {
                     new IllegalStateException("Name taken");
         }
         int x = tournament.getNumberOfParticipants();
+        int y = tournament.getTeamSize();
         while (x % 2 == 0){
             x /= 2;
         }

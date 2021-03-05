@@ -80,6 +80,13 @@
                             </div>
 
                             <div class="form-group row">
+                                <label class="col-4 col-form-label">Nombre de joueurs par équipe ( Par défaut : 1 )</label>
+                                <div class="col-8">
+                                    <input type="number" th:field="*{teamSize}" class="form-control" required />
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
                                 <label class="col-4 col-form-label">Description</label>
                                 <div class="col-8">
                                     <textarea th:field="*{description}" class="form-control"></textarea>
@@ -111,7 +118,7 @@
     <footer>
         <div class="container-fluid text-center p-3 primary-color">
             <h5 class="text-white">© 2021 Copyright </h5>
-            <h5 class="text-white">Laurent SAVIVANH - Fathi VANDY - Hamza KARHAT</h5>
+            <h5 class="text-white">Laurent SAVIVANH - Vandy FATHI - Hamza KARHAT</h5>
         </div>
     </footer>
 

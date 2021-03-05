@@ -40,11 +40,15 @@ public class Tournament {
     private String game;
 
     @Column(name = "nb_participants")
-    private Integer NumberOfParticipants;
+    private Integer NumberOfParticipants; // nombre de team qui participe
     @Column(name = "description", nullable = true)
     private String description;
     @Column(name = "start_date", nullable = true)
     private Date startdate;
+    @Column(name = "started")
+    private Boolean started = false;
+    @Column(name = "team_size")
+    private Integer teamSize = 1;
 
     @OneToMany(targetEntity = Team.class , cascade = CascadeType.ALL)
     @JoinColumn(name = "tournament_id", referencedColumnName = "id")
@@ -52,11 +56,10 @@ public class Tournament {
     @OneToMany(targetEntity = Game.class , cascade = CascadeType.ALL)
     @JoinColumn(name = "tournament_id", referencedColumnName = "id")
     private List<Game> Games ;
-    @Column(name = "started")
-    private Boolean started = false;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User owner;
+
 
 
     public Tournament(String name, Boolean isPrivate, Integer numberOfParticipants, String description, User owner) {
@@ -65,6 +68,14 @@ public class Tournament {
         NumberOfParticipants = numberOfParticipants;
         this.description = description;
         this.owner = owner;
+    }
+
+    public Tournament(String name, Boolean isPrivate, Integer numberOfParticipants, String description, Integer teamsize) {
+        this.name = name;
+        this.isPrivate = isPrivate;
+        NumberOfParticipants = numberOfParticipants;
+        this.description = description;
+        this.teamSize = teamsize;
     }
 
     public Tournament(String name, Boolean isPrivate, Integer numberOfParticipants) {
@@ -92,6 +103,14 @@ public class Tournament {
         NumberOfParticipants = numberOfParticipants;
         this.owner = owner;
         this.started = false;
+    }
+
+    public Integer getTeamSize() {
+        return teamSize;
+    }
+
+    public void setTeamSize(Integer teamSize) {
+        this.teamSize = teamSize;
     }
 
     public String getGame() {
