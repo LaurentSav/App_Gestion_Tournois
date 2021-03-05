@@ -32,11 +32,20 @@ public class TeamController {
 
     @GetMapping( "/{team_id}")
     public String findParticipant(Model model, @PathVariable Long team_id, Principal principal){
-
+        /*
         List<Player> listplayer = teamService.getTeamParticipant(team_id);
-        model.addAttribute("players", listplayer);
+        model.addAttribute("players", listplayer);*/
         return "view_player";
     }
+
+    @GetMapping("/{team_id}/createplayer")
+    public String createPlayer(Model model, @PathVariable Long team_id, Principal principal){
+
+        model.addAttribute("player", new Player());
+        return "create_player";
+    }
+
+
 
     @DeleteMapping("/{team_Id}")
     public void deleteTeam(@PathVariable("team_Id") Long teamId){

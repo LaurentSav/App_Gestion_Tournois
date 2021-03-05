@@ -25,9 +25,11 @@ public class PlayerController {
     public List<Player> getPlayers(){
         return playerService.getPlayers();
     }
+
+
     @PostMapping
-    public void registerNewTeam(@RequestBody Player player){
-        playerService.addNewPlayer(player);
+    public void registerNewTeam(@RequestBody Player player, Long tid){
+        playerService.addNewPlayer(player, tid);
     }
 
     @DeleteMapping(value = "/{playerId}")

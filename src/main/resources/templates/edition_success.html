@@ -62,6 +62,11 @@
             <input type="submit" class="btn btn-primary" value="Back to Account Page" />
         </form>
     </div>
+    <div class="marginauto marginTop5" th:if="${player == true}">
+        <form th:action="@{/tournament/{id}/participant/{teamid} (id=${tid}, teamid=${teamid})}" method="get">
+            <input type="submit" class="btn btn-primary" value="Back to Account Page" />
+        </form>
+    </div>
 
 
 </div>

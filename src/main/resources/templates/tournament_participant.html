@@ -67,7 +67,7 @@
                     <tbody>
                     <tr th:each="teams: ${team}">
                         <td th:text="${teams.name}">Name</td>
-                        <td><a th:href="/tournament/{id}/teams/{teamid} (id=${tournois.id}, teamid=${teams.id})"><input type="submit" class="btn btn-primary" value="View" /></a></td>
+                        <td><a th:href="@{/tournament/{id}/participant/{teamid}(id=${tournois}, teamid=${teams.id})}"><input type="submit" class="btn btn-primary" value="View" /></a></td>
                     </tr>
                     </tbody>
                 </table>

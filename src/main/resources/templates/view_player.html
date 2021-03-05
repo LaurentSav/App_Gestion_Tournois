@@ -56,15 +56,12 @@
 
     <div class="min-height">
         <div class="text-center marginTop5">
-            <h1>Vos Tournois</h1>
+            <h1>Les Joueurs de l'equipe</h1>
         </div>
 
-        <div class="text-center marginTop5">
-            <h1>Tournois en Cours</h1>
-        </div>
         <div class="width50 marginauto ">
             <div class="d-flex flex-row marginTop5 justify-content-end marginbot2">
-                <a th:href="@{/createtournament}">
+                <a th:href="@{/tournament/{id}/participant/{teamid}/createplayer (id=${tid}, teamid=${teamid})}">
                     <input type="submit" class="btn btn-primary" value="Add Player!" />
                 </a>
             </div>
@@ -72,20 +69,24 @@
                 <thead class="thead-dark">
                 <tr>
                     <th>Name</th>
-                    <th>Nom du Jeu</th>
-                    <th>Private ?</th>
-                    <th>Nb de participants</th>
-                    <th>View</th>
+                    <th th:if="${owner == true}">Edit</th>
+                    <th th:if="${owner == true}">Delete</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="tournois: ${listTournoi}">
-                    <td th:text="${tournois.name}">Name</td>
-                    <td th:text="${tournois.game}">Game</td>
-                    <td th:text="${tournois.private}">private</td>
-                    <td th:text="${tournois.numberOfParticipants}">nb participant</td>
-                    <td><a th:href="@{/tournament/{id}(id=${tournois.id})}"><input type="submit" class="btn btn-primary" value="View" /></a></td>
-                </tr>
+                    <tr th:each="teams: ${teams}">
+                        <td th:text="${teams.name}">Name</td>
+                        <td th:if="${owner == true}">
+                            <form th:action="@{/tournament/{id}/participant/{teamid}/edit (id=${tid}, teamid=${teamid}, pid=${teams.id})}" method="get">
+                                <input type="submit" class="btn btn-danger" value="Delete" />
+                            </form>
+                        </td>
+                        <td th:if="${owner == true}">
+                            <form th:action="@{/tournament/{id}/participant/{teamid}/{pid} (id=${tid}, teamid=${teamid}, pid=${teams.id})}" method="delete">
+                                <input type="submit" class="btn btn-warning" value="Edit" />
+                            </form>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
         </div>

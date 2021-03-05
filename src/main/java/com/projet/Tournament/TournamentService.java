@@ -104,6 +104,8 @@ public class TournamentService {
             throw
                     new IllegalStateException("Tournament " + tournamentId +" does not exist");
         }
+        
+        
 
         if(name != null && name.length() > 0 && !Objects.equals(tournamentOptional.get().getName(), name)){
             Optional<Tournament> nameOptional = tournamentRepository.findTournamentByName(name);
