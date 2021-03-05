@@ -52,8 +52,20 @@
     </nav>
 </div>
 <div class="min-height">
-    <div class="text-center marginTop5">
-        <h1>ERROR</h1>
+    <div class="marginauto marginTop5" th:if="${tour == true}">
+        <form th:action="@{/tournament/{id} (id=${tid})}" method="get">
+            <input type="submit" class="btn btn-primary" value="Back to Tournament Page" />
+        </form>
+    </div>
+    <div class="marginauto marginTop5" th:if="${account == true}">
+        <form th:action="@{/account}" method="get">
+            <input type="submit" class="btn btn-primary" value="Back to Account Page" />
+        </form>
+    </div>
+    <div class="marginauto marginTop5" th:if="${player == true}">
+        <form th:action="@{/tournament/{id}/participant/{teamid} (id=${tid}, teamid=${teamid})}" method="get">
+            <input type="submit" class="btn btn-primary" value="Back to Account Page" />
+        </form>
     </div>
 
 

@@ -1,3 +1,5 @@
+<!DOCTYPE html>
+
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
@@ -51,16 +53,33 @@
         </ul>
     </nav>
 </div>
-<div class="min-height">
-    <div class="text-center marginTop5">
-        <h1>ERROR</h1>
+
+    <div class="min-height">
+        <div class="text-center marginTop5">
+            <h1>Ajouter un joueur</h1>
+        </div>
+
+        <div class="width50 marginauto ">
+            <form th:action="@{/tournament/{id}/participant/{teamid}/createplayer/register (id=${tid}, teamid=${teamid})}" th:object="${player}"
+                  method="post" style="max-width: 600px; margin: 0 auto;">
+                <div class="m-3">
+                    <div class="form-group row">
+                        <label class="col-4 col-form-label"> Nom du joueur </label>
+                        <div class="col-8">
+                            <input type="text" th:field="*{name}" class="form-control" required />
+                        </div>
+                    </div>
+                    <div>
+                        <button type="submit" class="btn btn-primary">Ajouter</button>
+                    </div>
+                </div>
+            </form>
+
+        </div>
     </div>
 
 
-</div>
-
 </body>
-
 <footer>
     <div class="container-fluid text-center p-3 primary-color">
         <h5 class="text-white">© 2021 Copyright </h5>

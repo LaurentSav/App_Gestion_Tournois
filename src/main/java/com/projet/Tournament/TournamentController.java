@@ -1,9 +1,14 @@
 package com.projet.Tournament;
 
+import com.projet.Player.Player;
 import com.projet.Player.PlayerService;
 import com.projet.Team.Team;
+
+import com.projet.Users.CustomUserDetails;
+
 import com.projet.Team.TeamController;
 import com.projet.Team.TeamService;
+
 import com.projet.Users.CustomUserDetailsService;
 import com.projet.Users.User;
 import com.projet.Users.UserRepository;
@@ -33,6 +38,9 @@ public class TournamentController {
 
     @Autowired
     private TeamService teamService;
+
+    @Autowired
+    private CustomUserDetailsService userService;
 
 
     @Autowired
@@ -73,13 +81,66 @@ public class TournamentController {
         model.addAttribute("tournament",t);
         return "view_tournament";
     }
+
     @GetMapping( "/{tournamentId}/participant")
-    public String viewParticipant(Model model, @PathVariable Long tournamentId){
-        model.addAttribute("player",playerService.getPlayers());
-        model.addAttribute("teams",teamService.getTeams(tournamentId));
-        model.addAttribute("tournamentid", tournamentId.toString());
+    public String viewParticipant(Model model, @PathVariable("tournamentId") Long tournamentId){
+        List<Team> t = teamService.getTeams(tournamentId);
+        model.addAttribute("team", t);
+        model.addAttribute("tournois", tournamentId);
         return "tournament_participant";
     }
+
+    @GetMapping( "/{tournamentId}/participant/{teamid}")
+    public String viewTeam(Model model, @PathVariable("tournamentId") Long tournamentId, @PathVariable("teamid") Long teamid, Principal principal){
+
+        if(principal != null){
+            Tournament t = tournamentService.getTournament(tournamentId);
+            if(t.getOwner().getEmail().equals(principal.getName())){
+                model.addAttribute("owner", true);
+            }
+        }
+        List<Player> p = playerService.getTeamPlayers(teamid);
+        model.addAttribute("teams", p);
+        model.addAttribute("teamid", teamid);
+        model.addAttribute("tid", tournamentId);
+        return "view_player";
+    }
+
+    @GetMapping( "/{tournamentId}/participant/{teamid}/{playerid}/edit")
+    public String editPlayer(Model model, @PathVariable("tournamentId") Long tournamentId, @PathVariable("teamid") Long teamid, @PathVariable("playerid") Long pid){
+        return "create_player";
+    }
+
+
+    @GetMapping( "/{tournamentId}/participant/{teamid}/createplayer")
+    public String viewPlayer(Model model, @PathVariable("tournamentId") Long tournamentId, @PathVariable("teamid") Long teamid){
+        model.addAttribute("player", new Player());
+        model.addAttribute("teamid", teamid);
+        model.addAttribute("tid", tournamentId);
+        return "create_player";
+    }
+
+    @PostMapping( "/{tournamentId}/participant/{teamid}/createplayer/register")
+    public String createPlayer(Model model, @PathVariable("tournamentId") Long tournamentId, @PathVariable("teamid") Long teamid, Player player, Principal principal){
+        model.addAttribute("teamid", teamid);
+        model.addAttribute("tid", tournamentId);
+        if(principal != null){
+            playerService.addNewPlayer(player, principal, teamid);
+        }else{
+            playerService.addNewPlayer(player, teamid);
+        }
+
+        model.addAttribute("player", true);
+
+        return "edition_success";
+
+
+    }
+
+    @DeleteMapping( "/{tournamentId}/participant/{teamid}/{playerid}")
+    public String deletePlayerById(@PathVariable("tournamentId") Long tournamentId, @PathVariable("teamid") Long teamid,  @PathVariable("playerid") Long pid){
+        playerService.deletePlayer(pid);
+        return "redirect:/";
 
     @GetMapping( "/{tournamentId}/participant/create_team")
     public String addTeam(Model model, @PathVariable Long tournamentId){
@@ -89,7 +150,7 @@ public class TournamentController {
     }
 
     @GetMapping( "/{tournamentId}/planning")
-    public String viewPlanning(Model model, @PathVariable Long tournamentId, Principal principal){
+    public String viewPlanning(Model model, @PathVariable("tournamentId") Long tournamentId, Principal principal){
         if(principal != null){
             return "tournament_planning";
         }
@@ -97,7 +158,11 @@ public class TournamentController {
     }
 
     @GetMapping( "/{tournamentId}/setting")
-    public String viewSetting(Model model, @PathVariable Long tournamentId){
+    public String viewSetting(Model model, @PathVariable("tournamentId") Long tournamentId, Principal principal){
+
+        if(principal == null){
+            return "error";
+        }
         model.addAttribute("tournament",tournamentService.getTournament(tournamentId));
         return "tournament_setting";
     }
@@ -108,13 +173,19 @@ public class TournamentController {
         return "redirect:/";
     }
 
-    @PutMapping({ "/{tournamentId}"} )
-    public void updateTournament(
+    @PostMapping({ "/{tournamentId}/update"} )
+    public String updateTournament(
             @PathVariable("tournamentId") Long tournamentId,
             @RequestParam(required = false) String name,
+            @RequestParam(required = false) String game,
             @RequestParam(required = false) Boolean is_private,
-            @RequestParam(required = false) Integer nb_participants){
-        tournamentService.updateTournament(tournamentId, name, is_private, nb_participants);
+            @RequestParam(required = false) Integer nb_participants,
+            @RequestParam(required = false) String description,
+            Model model){
+        tournamentService.updateTournament(tournamentId, name,game, is_private, nb_participants, description);
+        model.addAttribute("tid", tournamentId);
+        model.addAttribute("tour", true);
+        return "edition_success";
     }
 
     @PutMapping({"/start/{tournamentId}"} )

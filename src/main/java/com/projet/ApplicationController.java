@@ -58,7 +58,12 @@ public class ApplicationController {
     }
 
     @GetMapping("/account")
-    public String viewAccount(Model model) {
+    public String viewAccount(Model model, Principal principal) {
+        if(principal != null){
+            User user = userRepo.findByEmail(principal.getName());
+            model.addAttribute("u", user);
+        }
+
         return "account";
     }
 
@@ -68,13 +73,13 @@ public class ApplicationController {
     }
 
     @PostMapping("/account")
-    public String confirmEdit(User user){
+    public String confirmEdit(User user, Model model){
         if (user == null) {
             throw new UsernameNotFoundException("User not found");
         }
         customUserDetailsService.updateUser(user.getEmail(),user.getFirstName(),user.getLastName());
-
-        return "account";
+        model.addAttribute("account", true);
+        return "edition_success";
     }
 
 

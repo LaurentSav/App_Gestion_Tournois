@@ -97,13 +97,16 @@ public class TournamentService {
     }
 
     @Transactional
-    public void updateTournament(Long tournamentId, String name, Boolean is_private, Integer nb_participants) {
+    public void updateTournament(Long tournamentId, String name, String game, Boolean is_private, Integer nb_participants, String description) {
         Optional<Tournament> tournamentOptional = tournamentRepository.findById(tournamentId);
         boolean exists = tournamentOptional.isPresent();
+        System.out.println(exists);
         if (!exists){
             throw
                     new IllegalStateException("Tournament " + tournamentId +" does not exist");
         }
+        
+        
 
         if(name != null && name.length() > 0 && !Objects.equals(tournamentOptional.get().getName(), name)){
             Optional<Tournament> nameOptional = tournamentRepository.findTournamentByName(name);
@@ -111,11 +114,11 @@ public class TournamentService {
                 throw
                         new IllegalStateException("Name taken");
             }
-            tournamentOptional.get().setName(name);
+            tournamentRepository.updateName(tournamentId, name);
         }
 
         if(is_private != null && !Objects.equals(tournamentOptional.get().isPrivate(), is_private)){
-            tournamentOptional.get().setPrivate(is_private);
+            tournamentRepository.updateprivate(tournamentId,is_private);
         }
 
         if(nb_participants != null && !Objects.equals(tournamentOptional.get().getNumberOfParticipants(), nb_participants)){
@@ -126,8 +129,17 @@ public class TournamentService {
             if(x != 1){
                 throw  new IllegalStateException("Nb of participants must be k = 2^n");
             }
-            tournamentOptional.get().setNumberOfParticipants(nb_participants);
+            tournamentRepository.updatenbParti(tournamentId, nb_participants);
         }
+
+        if(game != null && game.length() > 0 && !Objects.equals(tournamentOptional.get().getGame(), game)){
+            tournamentRepository.updateGame(tournamentId, game);
+        }
+
+        if(description != null && !Objects.equals(tournamentOptional.get().getDescription(), description)){
+            tournamentRepository.updateDescription(tournamentId,description);
+        }
+
     }
 
 

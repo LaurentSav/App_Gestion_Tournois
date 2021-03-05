@@ -95,7 +95,7 @@
 
                 <div class="container min-height">
                     <div class = "marginTop5">
-                        <h1> Welcome <span th:text = "${#authentication.getPrincipal().getFirstName()}"> </span></h1>
+                        <h1> Welcome <span th:text = "${u.getFirstName()}"> </span></h1>
                     </div>
 
                     <table class="table table-striped table-bordered marginTop5">
@@ -124,15 +124,15 @@
                         <tbody>
                             <tr>
                                 <td><h3>Adresse Mail</h3></td>
-                                <td><h3><span th:text = "${#authentication.getPrincipal().getUsername()}"></span></h3></td>
+                                <td><h3><span th:text = "${u.getEmail()}"></span></h3></td>
                             </tr>
                             <tr>
                                 <td><h3>Prénom</h3></td>
-                                <td><h3><span th:text = "${#authentication.getPrincipal().getFirstName()}"></span></h3></td>
+                                <td><h3><span th:text = "${u.getFirstName()}"></span></h3></td>
                             </tr>
                             <tr>
                                 <td><h3>Nom</h3></td>
-                                <td><h3><span th:text = "${#authentication.getPrincipal().getLastName()}"></span></h3></td>
+                                <td><h3><span th:text = "${u.getLastName()}"></span></h3></td>
                             </tr>
                         </tbody>
                     </table>
