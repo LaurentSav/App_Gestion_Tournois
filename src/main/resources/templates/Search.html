@@ -79,6 +79,7 @@
                     <thead class="thead-dark">
                     <tr>
                         <th>Name</th>
+                        <th>Game</th>
                         <th>Private ?</th>
                         <th>Nb de participants</th>
                         <th>View</th>
@@ -87,6 +88,7 @@
                     <tbody>
                     <tr th:each="tournois: ${tournaments}">
                         <td th:text="${tournois.name}">Name</td>
+                        <td th:text="${tournois.game}">Game</td>
                         <td th:text="${tournois.private}">private</td>
                         <td th:text="${tournois.numberOfParticipants}">nb participant</td>
                         <td><a th:href="@{/tournament/{id}(id=${tournois.id})}"><input type="submit" class="btn btn-primary" value="View" /></a></td>
