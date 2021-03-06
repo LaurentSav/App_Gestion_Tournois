@@ -119,6 +119,21 @@ public class TournamentController {
         return "edition_success";
     }
 
+    @GetMapping( "/{tournamentId}/participant/{teamid}/edit")
+    public String editTeam(Model model, @PathVariable("tournamentId") Long tournamentId, @PathVariable("teamid") Long teamid){
+        Team t = teamService.getTeam(teamid);
+        model.addAttribute("team", t);
+        model.addAttribute("teamid", teamid);
+        model.addAttribute("tid", tournamentId);
+        return "edit_team";
+    }
+
+    @PostMapping( "/{tournamentId}/participant/{teamid}/update")
+    public String updateTeam(Model model, @PathVariable("tournamentId") Long tournamentId, @PathVariable("teamid") Long teamid, @RequestParam(required = false) String name){
+        teamService.updateTeam(teamid, name);
+        return "edition_success";
+    }
+
 
     @GetMapping( "/{tournamentId}/participant/{teamid}/createplayer")
     public String viewPlayer(Model model, @PathVariable("tournamentId") Long tournamentId, @PathVariable("teamid") Long teamid){
@@ -127,6 +142,8 @@ public class TournamentController {
         model.addAttribute("tid", tournamentId);
         return "create_player";
     }
+
+
 
     @PostMapping( "/{tournamentId}/participant/{teamid}/createplayer/register")
     public String createPlayer(Model model, @PathVariable("tournamentId") Long tournamentId, @PathVariable("teamid") Long teamid, Player player, Principal principal){

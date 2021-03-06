@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
+import javax.swing.text.html.Option;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Objects;
@@ -38,6 +39,10 @@ public class TeamService {
     @Transactional
     public List<Team> getTeams(@RequestParam Long tournament_id) {
         return teamRepository.findTeamsBytournament(tournament_id);
+    }
+
+    public Team getTeam(Long team_id){
+        return teamRepository.findTeam(team_id);
     }
 
     public List<Player> getTeamParticipant(@RequestParam Long team_id){
@@ -79,12 +84,12 @@ public class TeamService {
     }
 
     @Transactional
-    public void updateTeam(Long tournamentId, String name) {
-        Optional<Team> teamOptional = teamRepository.findById(tournamentId);
+    public void updateTeam(Long teamId, String name) {
+        Optional<Team> teamOptional = teamRepository.findById(teamId);
         boolean exists = teamOptional.isPresent();
         if (!exists){
             throw
-                    new IllegalStateException("Team " + tournamentId +" does not exist");
+                    new IllegalStateException("Team " + teamId +" does not exist");
         }
 
         if(name != null && name.length() > 0 && !Objects.equals(teamOptional.get().getName(), name)){

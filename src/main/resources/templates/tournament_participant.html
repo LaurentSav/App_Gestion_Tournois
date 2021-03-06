@@ -76,7 +76,7 @@
                         <td th:text="${teams.name}">Name</td>
                         <td><a th:href="@{/tournament/{id}/participant/{teamid}(id=${tournois}, teamid=${teams.id})}"><input type="submit" class="btn btn-primary" value="View" /></a></td>
                         <td th:if="${owner == true}">
-                            <form th:action="@{/tournament/{id}/participant/{teamid}/edit (id=${tournois}, teamid=${teams.id}}" th:method="get">
+                            <form th:action="@{/tournament/{id}/participant/{teamid}/edit (id=${tournois}, teamid=${teams.id})}" th:method="get">
                                 <input type="submit" class="btn btn-warning" value="Edit" />
                             </form>
                         </td>
