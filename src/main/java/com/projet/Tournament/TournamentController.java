@@ -13,6 +13,8 @@ import com.projet.Users.CustomUserDetailsService;
 import com.projet.Users.User;
 import com.projet.Users.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.access.prepost.PreAuthorize;
 
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,9 +22,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,7 +47,6 @@ public class TournamentController {
 
     @Autowired
     private CustomUserDetailsService userService;
-
 
     @Autowired
     public TournamentController(TournamentService tournamentService) {
@@ -218,13 +222,16 @@ public class TournamentController {
     @PostMapping({ "/{tournamentId}/update"} )
     public String updateTournament(
             @PathVariable("tournamentId") Long tournamentId,
+            Tournament tournament,
             @RequestParam(required = false) String name,
             @RequestParam(required = false) String game,
             @RequestParam(required = false) Boolean is_private,
             @RequestParam(required = false) Integer nb_participants,
             @RequestParam(required = false) String description,
+            @RequestParam(required = false) @DateTimeFormat(pattern="yyyy-MM-dd") Date date,
             Model model){
-        tournamentService.updateTournament(tournamentId, name,game, is_private, nb_participants, description);
+
+        tournamentService.updateTournament(tournamentId, name,game, is_private, nb_participants, description, tournament.getStartdate());
         model.addAttribute("tid", tournamentId);
         model.addAttribute("tour", true);
         return "edition_success";

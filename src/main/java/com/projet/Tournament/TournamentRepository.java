@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -49,6 +50,12 @@ public interface TournamentRepository
     @Modifying(clearAutomatically = true)
     @Query("UPDATE Tournament t SET t.description = :description WHERE t.id = :id")
     public void updateDescription(@Param("id") Long id, @Param("description") String description);
+
+    @Transactional
+    @Modifying(clearAutomatically = true)
+    @Query(value = "UPDATE Tournament t SET t.startdate = :startdate WHERE t.id = :id")
+    public void updateStartDate(@Param("id") Long id, @Param("startdate") Date startdate);
+
 
 
 }

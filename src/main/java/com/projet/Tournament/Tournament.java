@@ -4,9 +4,12 @@ package com.projet.Tournament;
 import com.projet.Games.Game;
 import com.projet.Team.Team;
 import com.projet.Users.User;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -44,6 +47,7 @@ public class Tournament {
     @Column(name = "description", nullable = true)
     private String description;
     @Column(name = "start_date", nullable = true)
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date startdate;
     @Column(name = "started")
     private Boolean started = false;
@@ -70,13 +74,15 @@ public class Tournament {
         this.owner = owner;
     }
 
-    public Tournament(String name, Boolean isPrivate, Integer numberOfParticipants, String description, User owner ,Integer teamsize) {
+    public Tournament(String name, Boolean isPrivate, Integer numberOfParticipants, String description, User owner ,Integer teamsize, Date date) {
         this.name = name;
         this.isPrivate = isPrivate;
         NumberOfParticipants = numberOfParticipants;
         this.description = description;
         this.teamSize = teamsize;
         this.owner = owner;
+        this.startdate = date;
+        this.started = false;
     }
 
     public Tournament(String name, Boolean isPrivate, Integer numberOfParticipants, String description, Integer teamsize) {
@@ -232,9 +238,16 @@ public class Tournament {
         return startdate;
     }
 
+    public void setStartdate(String startdate) throws ParseException {
+
+        this.startdate = new SimpleDateFormat("yyyy-MM-dd").parse(startdate);
+    }
+
     public void setStartdate(Date startdate) {
+
         this.startdate = startdate;
     }
+
 
     @Override
     public String toString() {

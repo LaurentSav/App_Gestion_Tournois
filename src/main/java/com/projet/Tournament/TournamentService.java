@@ -14,6 +14,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.security.Principal;
+import java.text.ParseException;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -97,7 +99,7 @@ public class TournamentService {
     }
 
     @Transactional
-    public void updateTournament(Long tournamentId, String name, String game, Boolean is_private, Integer nb_participants, String description) {
+    public void updateTournament(Long tournamentId, String name, String game, Boolean is_private, Integer nb_participants, String description, Date date) {
         Optional<Tournament> tournamentOptional = tournamentRepository.findById(tournamentId);
         boolean exists = tournamentOptional.isPresent();
         System.out.println(exists);
@@ -139,6 +141,10 @@ public class TournamentService {
         if(description != null && !Objects.equals(tournamentOptional.get().getDescription(), description)){
             tournamentRepository.updateDescription(tournamentId,description);
         }
+
+
+        tournamentRepository.updateStartDate(tournamentId, date);
+
 
     }
 
