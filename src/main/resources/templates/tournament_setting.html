@@ -55,64 +55,68 @@
             <div class="text-center marginTop5">
                 <h1>Settings</h1>
             </div>
-            <div>
 
-                <form th:action="@{/tournament/{id}/update(id=${tournament.id})}" th:object="${tournament}"
-                      method="post" style="max-width: 600px; margin: 0 auto; max-height: 60%">
-                    <div class="m-3">
-                        <div class="form-group">
-                            <label class="col-4 col-form-label">Nom du tournoi</label>
-                            <div class="col-12">
-                                <input type="text" th:field="*{name}" th:value="tournament.name" class="form-control" required />
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-4 col-form-label">Nom du Jeu </label>
-                            <div class="col-12">
-                                <input type="text" th:field="*{game}" th:value="tournament.game" class="form-control" required/>
-                            </div>
-                        </div>
-
-
-                        <div class="form-group">
-                            <label class="col-4 col-form-label">Nombre de Participants</label>
-                            <div class="col-12">
-                                <input type="number" th:field="*{numberOfParticipants}" th:value="tournament.numberOfParticipants" class="form-control" required />
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-4 col-form-label">Description</label>
-                            <div class="col-12">
-                                <textarea th:field="*{description}" th:value="tournament.description" class="form-control"></textarea>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="col-4 col-form-label">Date de debut</label>
-                            <div class="col-8">
-                                <input type="date" th:field="*{startdate}" th:value="tournament.startdate" class="form-control"/>
-                            </div>
-                        </div>
-
-                        <div class="form-check marginTop5">
-                            <div class="d-flex flex-row">
-                                <label>Tournoi prive</label>
-                                <input type="checkbox" th:field="*{private}" class="marginleft5" />
-                            </div>
-
-
-                        </div>
-
-                        <div class="marginauto text-center">
-                            <button type="submit" class="btn btn-primary">Update</button>
-                        </div>
-                    </div>
-                </form>
-
-                <form class="marginauto text-center" th:action="@{/tournament/{id} (id=${tournament.id})}" th:method="delete">
-                    <input type="submit" class="btn btn-danger" value="Delete" />
+            <div class="text-center marginTop5">
+                <form class="marginauto text-center" th:action="@{/tournament/start/{id} (id=${tournament.id})}" th:method="put">
+                    <input type="submit" class="btn btn-primary" value="Start Tournament" />
                 </form>
             </div>
+
+            <form th:action="@{/tournament/{id}/update(id=${tournament.id})}" th:object="${tournament}"
+                  method="post" style="max-width: 600px; margin: 0 auto; max-height: 60%">
+                <div class="m-3">
+                    <div class="form-group">
+                        <label class="col-4 col-form-label">Nom du tournoi</label>
+                        <div class="col-12">
+                            <input type="text" th:field="*{name}" th:value="tournament.name" class="form-control" required />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-4 col-form-label">Nom du Jeu </label>
+                        <div class="col-12">
+                            <input type="text" th:field="*{game}" th:value="tournament.game" class="form-control" required/>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label class="col-4 col-form-label">Nombre de Participants</label>
+                        <div class="col-12">
+                            <input type="number" th:field="*{numberOfParticipants}" th:value="tournament.numberOfParticipants" class="form-control" required />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-4 col-form-label">Description</label>
+                        <div class="col-12">
+                            <textarea th:field="*{description}" th:value="tournament.description" class="form-control"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-4 col-form-label">Date de debut</label>
+                        <div class="col-8">
+                            <input type="date" th:field="*{startdate}" th:value="tournament.startdate" class="form-control"/>
+                        </div>
+                    </div>
+
+                    <div class="form-check marginTop5">
+                        <div class="d-flex flex-row">
+                            <label>Tournoi prive</label>
+                            <input type="checkbox" th:field="*{private}" class="marginleft5" />
+                        </div>
+
+
+                    </div>
+
+                    <div class="marginauto text-center">
+                        <button type="submit" class="btn btn-primary">Update</button>
+                    </div>
+                </div>
+            </form>
+
+            <form class="marginauto text-center" th:action="@{/tournament/{id} (id=${tournament.id})}" th:method="delete">
+                <input type="submit" class="btn btn-danger" value="Delete" />
+            </form>
         </div>
 
     </body>

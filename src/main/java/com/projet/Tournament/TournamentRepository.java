@@ -26,6 +26,7 @@ public interface TournamentRepository
 
     List<Tournament> findAllByIsPrivateIsFalse();
 
+
     @Transactional
     @Modifying(clearAutomatically = true)
     @Query("UPDATE Tournament t SET t.name = :name WHERE t.id = :id")
@@ -55,6 +56,11 @@ public interface TournamentRepository
     @Modifying(clearAutomatically = true)
     @Query(value = "UPDATE Tournament t SET t.startdate = :startdate WHERE t.id = :id")
     public void updateStartDate(@Param("id") Long id, @Param("startdate") Date startdate);
+
+    @Transactional
+    @Modifying(clearAutomatically = true)
+    @Query(value = "UPDATE Tournament t SET t.started = :started WHERE t.id = :id")
+    public void updateStarted(@Param("id") Long id, @Param("started") Boolean started);
 
 
 

@@ -1,6 +1,7 @@
 package com.projet.Tournament;
 
 import com.projet.Player.PlayerService;
+import com.projet.Team.Team;
 import com.projet.Users.CustomUserDetails;
 import com.projet.Users.CustomUserDetailsService;
 import com.projet.Users.User;
@@ -159,6 +160,8 @@ public class TournamentService {
 
         }
         tournamentOptional.get().setStarted(true);
+        tournamentRepository.updateStarted(tournamentId, true);
+
 
     }
 }

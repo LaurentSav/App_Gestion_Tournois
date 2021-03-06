@@ -60,7 +60,7 @@
         </div>
 
         <div class="width50 marginauto ">
-            <div class="d-flex flex-row marginTop5 justify-content-end marginbot2">
+            <div class="d-flex flex-row marginTop5 justify-content-end marginbot2" th:if="${notfull == true}">
                 <a th:href="@{/tournament/{id}/participant/{teamid}/createplayer (id=${tid}, teamid=${teamid})}">
                     <input type="submit" class="btn btn-primary" value="Add Player!" />
                 </a>

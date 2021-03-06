@@ -96,6 +96,10 @@ public class TournamentController {
                 model.addAttribute("owner", true);
             }
         }
+        Tournament t2 = tournamentService.getTournament(tournamentId);
+        if(t.size() < t2.getNumberOfParticipants()){
+            model.addAttribute("notfull", true);
+        }
         model.addAttribute("team", t);
         model.addAttribute("tournois", tournamentId);
         return "tournament_participant";
@@ -111,6 +115,13 @@ public class TournamentController {
             }
         }
         List<Player> p = playerService.getTeamPlayers(teamid);
+        Tournament t = tournamentService.getTournament(tournamentId);
+        if(p.size() < t.getTeamSize()){
+            model.addAttribute("notfull", true);
+        }
+
+
+
         model.addAttribute("teams", p);
         model.addAttribute("teamid", teamid);
         model.addAttribute("tid", tournamentId);
@@ -238,8 +249,9 @@ public class TournamentController {
     }
 
     @PutMapping({"/start/{tournamentId}"} )
-    public void startTournament(@PathVariable("tournamentId") Long tournamentId){
+    public String startTournament(@PathVariable("tournamentId") Long tournamentId){
         tournamentService.startTournament(tournamentId);
+        return "edition_success";
     }
 
 
