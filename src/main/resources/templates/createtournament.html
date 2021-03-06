@@ -108,11 +108,12 @@
                         </div>
                     </form>
                 </div>
+                <div sec:authorize="isAnonymous()" class="marginTop5">
+                    <h1 class="text-center"> Vous n'etes pas connecte !</h1>
+                    <h1 class="text-center"> Veuillez vous connecter / vous inscrire pour creer un tournois !</h1>
+                </div>
             </div>
-            <div sec:authorize="isAnonymous()" class="marginTop5">
-                <h1 class="text-center"> Vous n'etes pas connecte !</h1>
-                <h1 class="text-center"> Veuillez vous connecter / vous inscrire pour creer un tournois !</h1>
-            </div>
+
 
     </body>
     <footer>

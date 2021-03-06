@@ -39,6 +39,8 @@ public class PlayerService {
         return playerRepository.findAll();
     }
 
+    public Optional<Player> getPlayer(Long id){return playerRepository.findPlayerById(id);}
+
     public List<Player> getTeamPlayers(Long t_id) {
         Optional<Team> team = teamRepository.findById(t_id);
         if(!team.isPresent()){

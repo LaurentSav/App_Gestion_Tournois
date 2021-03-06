@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Optional;
 
 
 @Controller
@@ -144,10 +145,18 @@ public class TournamentController {
 
     @GetMapping( "/{tournamentId}/participant/{teamid}/{playerid}/edit")
     public String EditPlayer(Model model, @PathVariable("tournamentId") Long tournamentId, @PathVariable("teamid") Long teamid, @PathVariable("playerid") Long pid){
-        model.addAttribute("player", new Player());
+        Optional<Player> p = playerService.getPlayer(pid);
+        model.addAttribute("player", p);
         model.addAttribute("teamid", teamid);
         model.addAttribute("tid", tournamentId);
-        return "create_player";
+        model.addAttribute("pid", pid);
+        return "edit_player";
+    }
+
+    @PostMapping( "/{tournamentId}/participant/{teamid}/{playerid}/update")
+    public String updatePlayer(Model model, @PathVariable("tournamentId") Long tournamentId, @PathVariable("teamid") Long teamid, @PathVariable("playerid") Long pid, @RequestParam(required = false) String name){
+        playerService.updatePlayer(pid, name, teamid);
+        return "edition_success";
     }
 
 

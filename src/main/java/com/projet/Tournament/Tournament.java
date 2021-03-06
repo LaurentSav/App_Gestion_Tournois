@@ -70,6 +70,15 @@ public class Tournament {
         this.owner = owner;
     }
 
+    public Tournament(String name, Boolean isPrivate, Integer numberOfParticipants, String description, User owner ,Integer teamsize) {
+        this.name = name;
+        this.isPrivate = isPrivate;
+        NumberOfParticipants = numberOfParticipants;
+        this.description = description;
+        this.teamSize = teamsize;
+        this.owner = owner;
+    }
+
     public Tournament(String name, Boolean isPrivate, Integer numberOfParticipants, String description, Integer teamsize) {
         this.name = name;
         this.isPrivate = isPrivate;
