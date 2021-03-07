@@ -1,5 +1,7 @@
 package com.projet.Tournament;
 
+import com.projet.Games.Game;
+import com.projet.Games.GameService;
 import com.projet.Player.Player;
 import com.projet.Player.PlayerService;
 import com.projet.Team.Team;
@@ -47,6 +49,9 @@ public class TournamentController {
 
     @Autowired
     private CustomUserDetailsService userService;
+
+    @Autowired
+    private GameService gameService;
 
     @Autowired
     public TournamentController(TournamentService tournamentService) {
@@ -206,18 +211,16 @@ public class TournamentController {
         return "create_team";
     }
 
-    @GetMapping( "/{tournamentId}/planning")
-    public String viewPlanning(Model model, @PathVariable("tournamentId") Long tournamentId, Principal principal){
-        if(principal != null){
-            return "tournament_planning";
-        }
-        return "redirect:/";
-    }
 
     @GetMapping( "/{tournamentId}/setting")
     public String viewSetting(Model model, @PathVariable("tournamentId") Long tournamentId, Principal principal){
 
         if(principal == null){
+            return "error";
+        }
+        User u = userService.loadUser(principal.getName());
+        Tournament t = tournamentService.getTournament(tournamentId);
+        if(u.getId() != t.getOwner().getId()){
             return "error";
         }
         model.addAttribute("tournament",tournamentService.getTournament(tournamentId));
@@ -253,6 +256,71 @@ public class TournamentController {
         tournamentService.startTournament(tournamentId);
         return "edition_success";
     }
+
+    @GetMapping( "/{tournamentId}/planning")
+    public String viewPlanning(Model model, @PathVariable("tournamentId") Long tournamentId, Principal principal){
+
+        if(principal != null){
+            User u = userService.loadUser(principal.getName());
+            Tournament t = tournamentService.getTournament(tournamentId);
+            if(u.getId().equals(t.getOwner().getId())){
+                model.addAttribute("owner", true);
+            }
+        }
+        List<Game> glist = gameService.getGames(tournamentId);
+        model.addAttribute("tid", tournamentId);
+        model.addAttribute("games", glist);
+
+
+        return "tournament_planning";
+    }
+
+    @GetMapping( "/{tournamentId}/planning/createMatch")
+    public String createMatch(Model model, @PathVariable("tournamentId") Long tournamentId, Principal principal){
+        if(principal == null){
+            return "error";
+        }
+        User u = userService.loadUser(principal.getName());
+        Tournament t = tournamentService.getTournament(tournamentId);
+        if(!u.getId().equals(t.getOwner().getId())){
+            return "error";
+        }
+        List<Team> teams = teamService.getTeams(tournamentId);
+
+        model.addAttribute("game", new Game());
+        model.addAttribute("blue", teams);
+        model.addAttribute("red", teams);
+        model.addAttribute("tid", tournamentId);
+
+
+        return "create_match";
+    }
+    @PostMapping( "/{tournamentId}/planning/createMatch/register")
+    public String RegisterMatch(Model model, @PathVariable("tournamentId") Long tournamentId,
+                                Game game, Principal principal){
+
+        if(principal == null){
+            return "error";
+        }
+        User u = userService.loadUser(principal.getName());
+        Tournament t = tournamentService.getTournament(tournamentId);
+        if(!u.getId().equals(t.getOwner().getId())){
+            return "error";
+        }
+
+        gameService.createGame(tournamentId, game);
+
+        model.addAttribute("tid", tournamentId);
+
+        return "edition_success";
+    }
+    @DeleteMapping( "/{tournamentId}/planning/{matchid}/delete")
+    public String deleteMatchById(@PathVariable("tournamentId") Long tournamentId, @PathVariable("matchid") Long matchid) {
+        gameService.deleteGame(matchid);
+        return "edition_success";
+    }
+
+
 
 
 

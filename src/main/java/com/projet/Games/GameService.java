@@ -4,6 +4,7 @@ import com.projet.Team.Team;
 import com.projet.Team.TeamRepository;
 import com.projet.Tournament.Tournament;
 import com.projet.Tournament.TournamentRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -15,13 +16,44 @@ import java.util.Optional;
 public class GameService {
 
 
+
     private GameRepository gameRepository;
+
     private TournamentRepository tournamentRepository;
+
+    @Autowired
     private TeamRepository teamRepository;
 
     public GameService(GameRepository gameRepository, TournamentRepository tournamentRepository) {
         this.gameRepository = gameRepository;
         this.tournamentRepository = tournamentRepository;
+    }
+
+    public void createGame(Long tournament_id, Game g){
+        Optional<Tournament> t = tournamentRepository.findById(tournament_id);
+        Team tb = teamRepository.findTeam(g.getBlueteam().getId());
+        Team tr = teamRepository.findTeam(g.getRedteam().getId());
+        if(!t.isPresent()){
+            throw new IllegalStateException("Bracket creation failed because Tournament does not exist");
+        }
+        g.setBlueteam(tb);
+        g.setRedteam(tr);
+        g.setTournament(t.get());
+        gameRepository.save(g);
+    }
+
+    public void deleteGame(Long gameid){
+        Optional<Game> g = gameRepository.findById(gameid);
+        boolean exists = g.isPresent();
+        if (!exists){
+            throw
+                    new IllegalStateException("Match" + g +" does not exist");
+        }
+        gameRepository.delete(g.get());
+    }
+
+    public List<Game> getGames(Long tournament_id){
+        return gameRepository.findAllByTournament(tournament_id);
     }
 
 
