@@ -52,7 +52,7 @@
     </div>
     <div class="min-height">
         <div sec:authorize="isAuthenticated()">
-            <form th:action="@{/teams/{id} (id=${tournamentid})} " th:object="${team}"
+            <form th:action="@{/tournament/{id}/participant/create_team (id=${tournamentid})} " th:object="${team}"
                   method="post" style="max-width: 600px; margin: 0 auto;">
                 <div class="m-3">
                     <div class="form-group row">

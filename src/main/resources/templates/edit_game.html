@@ -1,3 +1,5 @@
+<!DOCTYPE html>
+
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
@@ -51,38 +53,60 @@
         </ul>
     </nav>
 </div>
-<div class="min-height marginTop5">
-    <div class="marginauto marginTop5 text-center" th:if="${tour == true}">
-        <form th:action="@{/tournament/{id} (id=${tid})}" method="get">
-            <input type="submit" class="btn btn-primary" value="Back to Tournament Page" />
-        </form>
-    </div>
-    <div class="marginauto marginTop5 text-center" th:if="${account == true}">
-        <form th:action="@{/account}" method="get">
-            <input type="submit" class="btn btn-primary" value="Back to Account Page" />
-        </form>
-    </div>
-    <div class="marginauto marginTop5 text-center" th:if="${player == true}">
-        <form th:action="@{/tournament/{id}/participant/{teamid} (id=${tid}, teamid=${teamid})}" method="get">
-            <input type="submit" class="btn btn-primary" value="Back to Team Page" />
-        </form>
-    </div>
-    <div class="marginauto marginTop5 text-center" th:if="${participant == true}">
-        <form th:action="@{/tournament/{id}/participant (id=${tid})}" method="get">
-            <input type="submit" class="btn btn-primary" value="Back to Participant Page" />
-        </form>
+
+<div class="min-height">
+    <div class="text-center marginTop5">
+        <h1>Editer un Match</h1>
     </div>
 
-    <div class="marginauto marginTop5 text-center" th:if="${planning == true}">
-        <form th:action="@{/tournament/{id}/planning (id=${tid})}" method="get">
-            <input type="submit" class="btn btn-primary" value="Back to Planning Page" />
+    <div class="width50 marginauto ">
+        <form th:action="@{/tournament/{id}/planning/{gameid}/edit/ (id=${tid}, gameid=${matchid})}" th:object="${game}"
+              method="post" style="max-width: 600px; margin: 0 auto;">
+            <div class="m-3 ">
+                <div class="form-group row marginTop5">
+                    <label class="col-4 col-form-label"> Team A </label>
+                    <div class="col-8">
+                        <select th:field="*{blueteam}" class="form-select">
+                            <option th:each="i : ${blue}" th:value="${i.id}" th:text="${i.name}" th:selected="${blueteam == i.id}">
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row marginTop5">
+                    <label class="col-4 col-form-label"> Team B </label>
+                    <div class="col-8">
+                        <select th:field="*{redteam}" class="form-select">
+                            <option th:each="i : ${red}" th:value="${i.id}" th:text="${i.name}" th:selected="${redteam == i.id}">
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row marginTop5">
+                    <label class="col-4 col-form-label">Date de debut</label>
+                    <div class="col-8">
+                        <input type="date" th:field="*{date}" class="form-control"/>
+                    </div>
+                </div>
+                <div class="form-group row marginTop5">
+                    <label class="col-4 col-form-label"> Winner </label>
+                    <div class="col-8">
+                        <select th:field="*{winner}" class="form-select">
+                            <option th:each="i : ${br}" th:value="${i.id}" th:text="${i.name}">
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="marginTop5 text-center">
+                    <button type="submit" class="btn btn-primary">Edit</button>
+                </div>
+            </div>
         </form>
-    </div>
 
+    </div>
 </div>
 
-</body>
 
+</body>
 <footer>
     <div class="container-fluid text-center p-3 primary-color">
         <h5 class="text-white">© 2021 Copyright </h5>

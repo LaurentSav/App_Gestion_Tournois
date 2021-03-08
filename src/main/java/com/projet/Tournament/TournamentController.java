@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -132,10 +133,20 @@ public class TournamentController {
         model.addAttribute("tid", tournamentId);
         return "view_player";
     }
+    @PostMapping("/{tournament_id}/participant/create_team")
+    public String registerNewTeam(Team team, @PathVariable Long tournament_id, Model model){
+        System.err.println("team tounament id = " + tournament_id);
+        teamService.addNewTeam(team, tournament_id);
+        model.addAttribute("participant", true);
+        model.addAttribute("tid", tournament_id);
+        return "edition_success";
+    }
 
     @DeleteMapping( "/{tournamentId}/participant/{teamid}")
-    public String deleteTeamById(@PathVariable("tournamentId") Long tournamentId, @PathVariable("teamid") Long teamid) {
+    public String deleteTeamById(@PathVariable("tournamentId") Long tournamentId, @PathVariable("teamid") Long teamid, Model model) {
         teamService.deleteTeam(teamid);
+        model.addAttribute("participant", true);
+        model.addAttribute("tid", tournamentId);
         return "edition_success";
     }
 
@@ -151,6 +162,8 @@ public class TournamentController {
     @PostMapping( "/{tournamentId}/participant/{teamid}/update")
     public String updateTeam(Model model, @PathVariable("tournamentId") Long tournamentId, @PathVariable("teamid") Long teamid, @RequestParam(required = false) String name){
         teamService.updateTeam(teamid, name);
+        model.addAttribute("participant", true);
+        model.addAttribute("tid", tournamentId);
         return "edition_success";
     }
 
@@ -193,14 +206,20 @@ public class TournamentController {
     @PostMapping( "/{tournamentId}/participant/{teamid}/{playerid}/update")
     public String updatePlayer(Model model, @PathVariable("tournamentId") Long tournamentId, @PathVariable("teamid") Long teamid, @PathVariable("playerid") Long pid, @RequestParam(required = false) String name){
         playerService.updatePlayer(pid, name, teamid);
+        model.addAttribute("player", true);
+        model.addAttribute("tid", tournamentId);
+        model.addAttribute("teamid", teamid);
         return "edition_success";
     }
 
 
 
     @DeleteMapping( "/{tournamentId}/participant/{teamid}/{playerid}")
-    public String deletePlayerById(@PathVariable("tournamentId") Long tournamentId, @PathVariable("teamid") Long teamid,  @PathVariable("playerid") Long pid) {
+    public String deletePlayerById(Model model, @PathVariable("tournamentId") Long tournamentId, @PathVariable("teamid") Long teamid,  @PathVariable("playerid") Long pid) {
         playerService.deletePlayer(pid);
+        model.addAttribute("player", true);
+        model.addAttribute("tid", tournamentId);
+        model.addAttribute("teamid", teamid);
         return "edition_success";
     }
 
@@ -268,8 +287,20 @@ public class TournamentController {
             }
         }
         List<Game> glist = gameService.getGames(tournamentId);
+        List<Game> nonfini = new ArrayList<Game>();
+        List<Game> fini = new ArrayList<Game>();
+        for(Game g : glist){
+            if(g.getWinner() == null){
+                nonfini.add(g);
+            }else{
+                fini.add(g);
+            }
+        }
+
         model.addAttribute("tid", tournamentId);
         model.addAttribute("games", glist);
+        model.addAttribute("nonfini", nonfini);
+        model.addAttribute("fini", fini);
 
 
         return "tournament_planning";
@@ -317,6 +348,69 @@ public class TournamentController {
     @DeleteMapping( "/{tournamentId}/planning/{matchid}/delete")
     public String deleteMatchById(@PathVariable("tournamentId") Long tournamentId, @PathVariable("matchid") Long matchid) {
         gameService.deleteGame(matchid);
+        return "edition_success";
+    }
+
+    @GetMapping( "/{tournamentId}/planning/{matchid}/edit")
+    public String EditMatch(Model model, @PathVariable("tournamentId") Long tournamentId, @PathVariable("matchid") Long matchid, Principal principal){
+        if(principal == null){
+            return "error";
+        }
+        User u = userService.loadUser(principal.getName());
+        Tournament t = tournamentService.getTournament(tournamentId);
+        if(!u.getId().equals(t.getOwner().getId())){
+            return "error";
+        }
+        List<Team> teams = teamService.getTeams(tournamentId);
+        Game game = gameService.getGame(matchid);
+        List<Team> teambr = new ArrayList<Team>();
+        teambr.add(new Team());
+        teambr.add(game.getBlueteam());
+        teambr.add(game.getRedteam());
+
+        model.addAttribute("game", game);
+        model.addAttribute("blue", teams);
+        model.addAttribute("red", teams);
+        model.addAttribute("br", teambr);
+        model.addAttribute("tid", tournamentId);
+        model.addAttribute("matchid", matchid);
+
+        return "edit_game";
+    }
+    @PostMapping( "/{tournamentId}/planning/{matchid}/edit")
+    public String EditConfirmMatch(Model model, @PathVariable("tournamentId") Long tournamentId, @PathVariable("matchid") Long matchid, Principal principal,
+                                   @RequestParam(required = false) @DateTimeFormat(pattern="yyyy-MM-dd") Date date,
+                                   @RequestParam(required = false) Team blueteam,
+                                   @RequestParam(required = false) Team redteam,
+                                   @RequestParam(required = false) Team winner){
+
+        if(principal == null){
+            return "error";
+        }
+        User u = userService.loadUser(principal.getName());
+        Tournament t = tournamentService.getTournament(tournamentId);
+        if(!u.getId().equals(t.getOwner().getId())){
+            return "error";
+        }
+
+        gameService.updateGame(matchid, redteam.getId(), blueteam.getId(), date);
+
+
+        if(winner != null){
+            System.err.println(winner.getName());
+            if(winner.getName() != null) {
+                if (winner.getId().equals(blueteam.getId())) {
+                    gameService.setWinnerBlue(blueteam.getId());
+                } else {
+                    gameService.setWinnerRed(redteam.getId());
+                }
+            }
+        }
+
+        model.addAttribute("planning", true);
+        model.addAttribute("tid", tournamentId);
+
+
         return "edition_success";
     }
 

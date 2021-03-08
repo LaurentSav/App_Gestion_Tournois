@@ -6,6 +6,7 @@ import com.projet.Tournament.Tournament;
 import com.projet.Tournament.TournamentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -27,6 +28,10 @@ public class GameService {
     public GameService(GameRepository gameRepository, TournamentRepository tournamentRepository) {
         this.gameRepository = gameRepository;
         this.tournamentRepository = tournamentRepository;
+    }
+
+    public Game getGame(Long id){
+        return gameRepository.findbyGameId(id);
     }
 
     public void createGame(Long tournament_id, Game g){
@@ -70,6 +75,7 @@ public class GameService {
 
     }
 
+    @Transactional
     public void updateGame(Long game_id, Long rteam_id, Long bteam_id, Date date) {
         Optional<Game> g = gameRepository.findById(game_id);
         if(!g.isPresent()){
@@ -86,6 +92,7 @@ public class GameService {
             if(!Objects.equals(g.get().getTournament(), t.get().getTournament())){
                 throw new IllegalStateException("red team " + rteam_id +" doesnt isnt in this tournament" );
             }
+            System.err.println(t.get().getName());
             g.get().setRedteam(t.get());
         }
 
@@ -99,10 +106,11 @@ public class GameService {
             if(!Objects.equals(g.get().getTournament(), t.get().getTournament())){
                 throw new IllegalStateException("blue team " + rteam_id +" doesnt isnt in this tournament" );
             }
+            System.err.println(t.get().getName());
             g.get().setBlueteam(t.get());
         }
 
-       /* if(winner_id!= null){
+       /*if(winner_id!= null){
             if(!Objects.equals(g.get().getBlueteam().getId(), winner_id) &&
                             !Objects.equals(g.get().getRedteam().getId(), winner_id)){
                 throw new IllegalStateException("winner team " + winner_id +" is not participating in this game" );
@@ -123,6 +131,8 @@ public class GameService {
 
     }
 
+
+    @Transactional
     public void setWinnerBlue(Long game_id) {
         Optional<Game> g = gameRepository.findById(game_id);
         if(!g.isPresent()){
@@ -131,6 +141,7 @@ public class GameService {
         g.get().setWinner(g.get().getBlueteam());
     }
 
+    @Transactional
     public void setWinnerRed(Long game_id) {
         Optional<Game> g = gameRepository.findById(game_id);
         if(!g.isPresent()){
