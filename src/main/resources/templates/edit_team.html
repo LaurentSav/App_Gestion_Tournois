@@ -53,15 +53,15 @@
 </div>
 <div class="min-height">
     <div class="text-center marginTop5">
-        <h1>Edit Joueur</h1>
+        <h1>Edit Team</h1>
     </div>
     <div>
 
         <form th:action="@{/tournament/{tournamentId}/participant/{teamid}/update (tournamentId=${tid}, teamid=${teamid})}" th:object="${team}"
               th:method="post" style="max-width: 600px; margin: 0 auto; max-height: 60%">
-            <div class="m-3">
+            <div class="m-3 marginbot5">
                 <div class="form-group">
-                    <label class="col-4 col-form-label">Nom du joueur</label>
+                    <label class="col-4 col-form-label">Nom de l'équipe</label>
                     <div class="col-12">
                         <input type="text" th:field="*{name}" th:value="player.name" class="form-control" required />
                     </div>
