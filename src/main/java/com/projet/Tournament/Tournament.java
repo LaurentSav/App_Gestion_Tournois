@@ -54,10 +54,10 @@ public class Tournament {
     @Column(name = "team_size")
     private Integer teamSize = 1;
 
-    @OneToMany(targetEntity = Team.class , cascade = CascadeType.ALL)
+    @OneToMany(targetEntity = Team.class , cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "tournament_id", referencedColumnName = "id")
     private List<Team> teams;
-    @OneToMany(targetEntity = Game.class , cascade = CascadeType.ALL)
+    @OneToMany(targetEntity = Game.class , cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "tournament_id", referencedColumnName = "id")
     private List<Game> Games ;
     @ManyToOne(fetch = FetchType.LAZY)

@@ -49,12 +49,17 @@ public class TeamService {
         return playerService.getTeamPlayers(team_id);
     }
 
+    @Transactional
     public void deleteTeam(Long teamId) {
         Optional<Team> team = teamRepository.findById(teamId);
         boolean exists = team.isPresent();
         if (!exists){
             throw
                     new IllegalStateException("Team" + teamId +" does not exist");
+        }
+        List<Player> players = playerService.getTeamPlayers(teamId);
+        for(Player p : players){
+            playerService.deletePlayer(p.getId(), teamId);
         }
         teamRepository.delete(team.get());
     }

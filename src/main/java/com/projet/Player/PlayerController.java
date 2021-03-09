@@ -32,10 +32,6 @@ public class PlayerController {
         playerService.addNewPlayer(player, tid);
     }
 
-    @DeleteMapping(value = "/{playerId}")
-    public void deletePlayer(@PathVariable("playerId") Long playerId){
-        playerService.deletePlayer(playerId);
-    }
 
     @PutMapping("/{player_Id}")
     public void updateTeam(

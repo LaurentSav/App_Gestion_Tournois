@@ -2,6 +2,7 @@ package com.projet.Player;
 
 import com.projet.Team.Team;
 import com.projet.Users.User;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 
@@ -28,6 +29,10 @@ public class Player {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "team_id", nullable = true)
+    private Team team;
 
 
     public Player() {
@@ -66,9 +71,7 @@ public class Player {
         this.team = team;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "team_id", nullable = false)
-    private Team team;
+
 
 
     public Player(String name) {

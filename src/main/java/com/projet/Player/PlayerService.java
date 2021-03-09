@@ -49,11 +49,14 @@ public class PlayerService {
         return playerRepository.findPlayersByTeam(team.get());
     }
 
-    public void deletePlayer(Long playerId) {
+    public void deletePlayer(Long playerId, Long tid) {
         Optional<Player> player = playerRepository.findById(playerId);
         if(!player.isPresent()){
             throw new IllegalStateException("player "+ playerId +" does not exist");
         }
+        player.get().setUser(null);
+        Optional<Team> team = teamRepository.findById(tid);
+        team.get().setCaptain(null);
         playerRepository.delete(player.get());
     }
 
@@ -76,7 +79,7 @@ public class PlayerService {
         Long t_id = playerOptional.get().getTeam().getId();
         Optional<Team> pTeam = teamRepository.findById(t_id);
         if(!pTeam.isPresent()){
-            deletePlayer(player_id);
+            deletePlayer(player_id,team_id);
             throw  new IllegalStateException("Player's team doesnt exist anymore");
         }
 

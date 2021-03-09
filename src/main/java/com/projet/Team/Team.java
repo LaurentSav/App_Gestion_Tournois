@@ -44,14 +44,15 @@ public class Team {
     private Tournament tournament;
 
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "captain_id", referencedColumnName = "id")
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "captain_id", referencedColumnName = "id", nullable = true)
     private Player captain;
 
     @OneToMany(targetEntity = Player.class ,
             cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY)
-    @JoinColumn(name = "team_id", referencedColumnName = "id")
+            fetch = FetchType.LAZY,
+            orphanRemoval = true)
+    @JoinColumn(name = "team_id", referencedColumnName = "id", nullable = true)
     @JsonIgnore
     private List<Player> Players;
 

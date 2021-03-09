@@ -1,7 +1,11 @@
 package com.projet.Tournament;
 
+import com.projet.Games.Game;
+import com.projet.Games.GameService;
+import com.projet.Player.Player;
 import com.projet.Player.PlayerService;
 import com.projet.Team.Team;
+import com.projet.Team.TeamService;
 import com.projet.Users.CustomUserDetails;
 import com.projet.Users.CustomUserDetailsService;
 import com.projet.Users.User;
@@ -28,7 +32,16 @@ public class TournamentService {
     private final TournamentRepository tournamentRepository;
 
     @Autowired
+    private TeamService teamService;
+
+    @Autowired
+    private PlayerService playerService;
+
+    @Autowired
     private CustomUserDetailsService customUserDetailsService;
+
+    @Autowired
+    private GameService gameService;
 
     public TournamentService(TournamentRepository tournamentRepository) {
         this.tournamentRepository = tournamentRepository;
@@ -92,10 +105,29 @@ public class TournamentService {
     public void deleteTournament(long tournamentId) {
         Optional<Tournament> tournamentOptional = tournamentRepository.findById(tournamentId);
         boolean exists = tournamentOptional.isPresent();
-        if (!exists){
+        if (!exists) {
             throw
-                    new IllegalStateException("Tournament " + tournamentId +" does not exist");
+                    new IllegalStateException("Tournament " + tournamentId + " does not exist");
         }
+        List<Game> games = gameService.getGames(tournamentId);
+        if(!games.isEmpty()){
+            for(Game g : games){
+                gameService.deleteGame(g.getId());
+            }
+        }
+        List<Team> teams = teamService.getTeams(tournamentId);
+        if (!teams.isEmpty()){
+            for (Team t : teams) {
+                List<Player> players = playerService.getTeamPlayers(t.getId());
+                if(!players.isEmpty()){
+                    for (Player p : players) {
+                        playerService.deletePlayer(p.getId(), t.getId());
+                    }
+                }
+                teamService.deleteTeam(t.getId());
+            }
+        }
+
         tournamentRepository.delete(tournamentOptional.get());
     }
 
@@ -125,13 +157,6 @@ public class TournamentService {
         }
 
         if(nb_participants != null && !Objects.equals(tournamentOptional.get().getNumberOfParticipants(), nb_participants)){
-            int x = nb_participants;
-            while (x % 2 == 0){
-                x /= 2;
-            }
-            if(x != 1){
-                throw  new IllegalStateException("Nb of participants must be k = 2^n");
-            }
             tournamentRepository.updatenbParti(tournamentId, nb_participants);
         }
 

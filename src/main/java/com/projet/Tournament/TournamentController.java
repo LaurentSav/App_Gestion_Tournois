@@ -216,7 +216,7 @@ public class TournamentController {
 
     @DeleteMapping( "/{tournamentId}/participant/{teamid}/{playerid}")
     public String deletePlayerById(Model model, @PathVariable("tournamentId") Long tournamentId, @PathVariable("teamid") Long teamid,  @PathVariable("playerid") Long pid) {
-        playerService.deletePlayer(pid);
+        playerService.deletePlayer(pid, teamid);
         model.addAttribute("player", true);
         model.addAttribute("tid", tournamentId);
         model.addAttribute("teamid", teamid);
@@ -264,7 +264,7 @@ public class TournamentController {
             @RequestParam(required = false) @DateTimeFormat(pattern="yyyy-MM-dd") Date date,
             Model model){
 
-        tournamentService.updateTournament(tournamentId, name,game, is_private, nb_participants, description, tournament.getStartdate());
+        tournamentService.updateTournament(tournamentId, name,game, is_private, tournament.getNumberOfParticipants(), description, tournament.getStartdate());
         model.addAttribute("tid", tournamentId);
         model.addAttribute("tour", true);
         return "edition_success";
@@ -323,9 +323,9 @@ public class TournamentController {
         model.addAttribute("red", teams);
         model.addAttribute("tid", tournamentId);
 
-
         return "create_match";
     }
+
     @PostMapping( "/{tournamentId}/planning/createMatch/register")
     public String RegisterMatch(Model model, @PathVariable("tournamentId") Long tournamentId,
                                 Game game, Principal principal){
@@ -342,6 +342,7 @@ public class TournamentController {
         gameService.createGame(tournamentId, game);
 
         model.addAttribute("tid", tournamentId);
+        model.addAttribute("planning", true);
 
         return "edition_success";
     }

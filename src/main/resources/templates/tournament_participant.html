@@ -54,7 +54,7 @@
         <div class="min-height">
             <div class="text-center marginTop5">
                 <h1>Participants</h1>
-                <form th:if="${notfull == true}" th:action="@{/tournament/{id}/participant/create_team (id=${tournois})}" method="get">
+                <form class=" marginTop5" th:if="${notfull == true}" th:action="@{/tournament/{id}/participant/create_team (id=${tournois})}" method="get">
                         <input type="submit" class="btn btn-primary" value="Create Team" />
                 </form>
             </div>
