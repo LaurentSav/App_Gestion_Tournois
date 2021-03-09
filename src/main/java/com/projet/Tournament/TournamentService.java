@@ -45,7 +45,7 @@ public class TournamentService {
     }
 
     public Page<Tournament> getTournaments(int pageNum){
-        int pagesize = 15;
+        int pagesize = 8;
         Pageable pageable = PageRequest.of(pageNum -1, pagesize);
         return tournamentRepository.findAll(pageable);
     }
