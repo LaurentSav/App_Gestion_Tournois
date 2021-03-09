@@ -7,6 +7,7 @@
         <title>Tournoi de Jeux</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
         <link rel="stylesheet" href="/css/style.css">
+        <script type="text/javascript" src="/js/index.js"></script>
     </head>
 
     <body>
@@ -58,6 +59,9 @@
             <div class="text-center marginTop5">
                 <h1>Tournois en Cours</h1>
             </div>
+            <div class="marginTop5 text-center width50 marginauto">
+                <input class="textwidth" type="text" id="searchtext" placeholder="Rechercher un tournoi" onkeyup="simpleSearch()">
+            </div>
             <div class="width50 marginauto ">
                 <div class="d-flex flex-row marginTop5 justify-content-end marginbot2">
                         <a th:href="@{/createtournament}">
@@ -74,7 +78,7 @@
                         <th>View</th>
                     </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="displayedTournaments">
                     <tr th:each="tournois: ${listTournoi}">
                         <td th:text="${tournois.name}">Name</td>
                         <td th:text="${tournois.game}">Game</td>
@@ -98,9 +102,6 @@
                     </a>
                 </div>
             </div>
-
-
-
         </div>
 
 
@@ -112,8 +113,6 @@
             <h5 class="text-white">Laurent SAVIVANH - Fathi VANDY - Hamza KARHAT</h5>
         </div>
     </footer>
-
-</body>
 
 
 </html>
